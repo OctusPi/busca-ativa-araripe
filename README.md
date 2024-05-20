@@ -21,25 +21,32 @@ Clone o repositório do projeto:
 ## Configuração do Backend (Laravel)
 
 1. composer install:
+   ```bash
     cd server
     composer install
     cp .env.example .env
     php artisan key:generate
     php artisan migrate
     php artisan db:seed
+   ```
 
 2. Inicie o servidor de desenvolvimento do Laravel:
+   ```bash
     php artisan serve
-
+   ```
 
 ## Configuração do Frontend Vue
 
 1. npm install:
+   ```bash
     cd client
     npm install
+   ```
 
 2. Inicie o servidor de desenvolvimento Vue:
-    npm run dev 
+   ```bash
+    npm run dev
+   ```
 
 ## Estrutura do Projeto
 ```plaintext
