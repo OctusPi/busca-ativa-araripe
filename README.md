@@ -6,7 +6,7 @@ Este é um projeto que utiliza Laravel como backend e Vue.js como frontend. Este
 
 Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
-- [PHP](https://www.php.net/downloads) >= 7.4
+- [PHP](https://www.php.net/downloads) >= 8.1
 - [Composer](https://getcomposer.org/)
 - [Node.js](https://nodejs.org/) >= 12.x
 - [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
