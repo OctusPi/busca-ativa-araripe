@@ -8,7 +8,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
 - [PHP](https://www.php.net/downloads) >= 8.1
 - [Composer](https://getcomposer.org/)
-- [Node.js](https://nodejs.org/) >= 12.x
+- [Node.js](https://nodejs.org/) >= 18.x
 - [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
 
 
