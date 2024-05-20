@@ -42,6 +42,7 @@ Clone o repositório do projeto:
     npm run dev 
 
 ## Estrutura do Projeto
+```plaintext
 project-root/
 ├── client/                # Diretório principal do Vue.js
 │   ├── public/
