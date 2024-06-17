@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
+use App\Casts\Json;
 
 class User extends Authenticatable
 {
@@ -55,7 +57,27 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'password' => 'hashed'
+            'password' => 'hashed',
+            'organs' => Json::class
+        ];
+    }
+
+    public static function validateFields(?int $id = null):array
+    {
+        return [
+            'name'   => 'required',
+            'email'  => ['required', 'email', Rule::unique('users')->ignore($id)],
+            'profile' => 'required',
+            'status' => 'required'
+        ];
+    }
+
+    public static function validateMsg():array
+    {
+        return [
+            'required' => 'Campo obrigatório não informado!',
+            'email'    => 'Informe um email válido!',
+            'unique'   => 'Usuário já registrado no sistema!'
         ];
     }
 
