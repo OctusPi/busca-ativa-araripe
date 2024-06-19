@@ -4,37 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Organ extends Model
+class School extends Model
 {
     use HasFactory;
 
-    const S_INACTIVE = 0;
-    const S_ACTIVE = 1;
-
-    protected string $table = 'organs';
+    protected string $table = 'schools';
 
     protected $fillable = [
+        'organ',
+        'inep',
         'name',
-        'cnpj',
-        'phone',
-        'email',
         'address',
-        'postalcity',
-        'postalcode',
         'status'
     ];
 
-    public function school():BelongsTo
-    {
-        return $this->belongsTo(School::class);
-    }
-
-    public function serie():BelongsTo
-    {
-        return $this->belongsTo(Serie::class);
+    public function organ():HasOne{
+        return $this->hasOne(Organ::class, 'id', 'organ');
     }
 
     public function classe():BelongsTo
@@ -45,13 +34,10 @@ class Organ extends Model
     public static function validateFields(?int $id = null):array
     {
         return [
+            'organ'      => 'required',
+            'inep'       => ['required', Rule::unique('schools')->ignore($id)],
             'name'       => 'required',
-            'cnpj'       => ['required', Rule::unique('organs')->ignore($id)],
-            'phone'      => 'required',
-            'email'      => 'required|email',
             'address'    => 'required',
-            'postalcity' => 'required',
-            'postalcode' => 'required',
             'status'     => 'required'
         ];
     }
@@ -65,11 +51,11 @@ class Organ extends Model
         ];
     }
 
-    public static function list_status():array
+    public function list_status():array
     {
         return [
-            ['id' => self::S_INACTIVE, 'title' => 'Inativo'],
-            ['id' => self::S_ACTIVE, 'title' => 'Ativo']
+            ['id' => 1, 'title' => 'Ativo'],
+            ['id' => 0, 'title' => 'Inativo']
         ];
     }
 }

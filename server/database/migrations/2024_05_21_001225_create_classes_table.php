@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('organ_id')->constrained('organs');
-            $table->foreignId('school_id')->constrained('schools');
-            $table->foreignId('serie_id')->constrained('series');
+            $table->foreignId('organ')->constrained('organs');
+            $table->foreignId('school')->constrained('schools');
+            $table->foreignId('serie')->constrained('series');
             $table->string('name');
-            $table->integer('shift');
+            $table->integer('turn');
             $table->boolean('status');
         });
     }

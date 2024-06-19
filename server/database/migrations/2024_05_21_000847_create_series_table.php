@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('series', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('organ_id')->constrained('organs');
+            $table->foreignId('organ')->constrained('organs');
             $table->string('code', 20);
             $table->string('name');
             $table->integer('course');

@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('frequencies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('organ_id')->constrained('organs');
-            $table->foreignId('school_id')->constrained('schools');
-            $table->foreignId('serie_id')->constrained('series');
-            $table->foreignId('classe_id')->constrained('classes');
-            $table->foreignId('subject_id')->constrained('subjects');
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->nullOnDelete();
-            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('organ')->constrained('organs');
+            $table->foreignId('school')->constrained('schools');
+            $table->foreignId('serie')->constrained('series');
+            $table->foreignId('classe')->constrained('classes');
+            $table->foreignId('subject')->constrained('subjects');
+            $table->foreignId('teacher')->nullable()->constrained('teachers')->nullOnDelete();
+            $table->foreignId('student')->constrained('students');
             $table->date('date_miss');
         });
     }
