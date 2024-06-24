@@ -33,6 +33,11 @@ class Serie extends Model
         return $this->belongsTo(Classe::class);
     }
 
+    public function registration():BelongsTo
+    {
+        return $this->belongsTo(Registration::class);
+    }
+
     public static function validateFields(?int $id = null):array
     {
         return [

@@ -42,6 +42,21 @@ class Organ extends Model
         return $this->belongsTo(Classe::class);
     }
 
+    public function subject():BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function student():BelongsTo
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function registration():BelongsTo
+    {
+        return $this->belongsTo(Registration::class);
+    }
+
     public static function validateFields(?int $id = null):array
     {
         return [
