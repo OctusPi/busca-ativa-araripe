@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subject extends Model
 {
@@ -17,6 +18,11 @@ class Subject extends Model
     public function organ():HasOne
     {
         return $this->hasOne(Organ::class, 'id', 'organ');
+    }
+
+    public function grid():BelongsTo
+    {
+        return $this->belongsTo(Grid::class);
     }
 
     public static function list_areas():array

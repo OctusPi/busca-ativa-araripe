@@ -36,6 +36,11 @@ class School extends Model
         return $this->belongsTo(Registration::class);
     }
 
+    public function grid():BelongsTo
+    {
+        return $this->belongsTo(Grid::class);
+    }
+
     public static function validateFields(?int $id = null):array
     {
         return [
