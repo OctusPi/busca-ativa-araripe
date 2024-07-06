@@ -20,19 +20,19 @@ function checkrule (rule, value){
             break;
         case 'email':
             isvalid = regexEmail.test(value)
-            message = isvalid ? '' : 'O Campor precisa ser um e-mail válido!'
+            message = isvalid ? '' : 'O campo precisa ser um e-mail válido!'
             break;
         case 'phone':
             isvalid = regexPhone.test(value)
-            message = isvalid ? '' : 'O Campor precisa ser um telefone válido!'
+            message = isvalid ? '' : 'O campo precisa ser um telefone válido!'
             break;
         case 'cpf':
             isvalid = regexCPF.test(value)
-            message = isvalid ? '' : 'O Campor precisa ser um CPF válido!'
+            message = isvalid ? '' : 'O campo precisa ser um CPF válido!'
             break;
         case 'date':
             isvalid = regexDate.test(value)
-            message = isvalid ? '' : 'O Campor precisa ser uma data válida!'
+            message = isvalid ? '' : 'O campo precisa ser uma data válida!'
             break;
         default:
             break;
