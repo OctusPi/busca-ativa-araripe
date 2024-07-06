@@ -14,13 +14,9 @@ return new class extends Migration
         Schema::create('frequencies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('organ')->constrained('organs');
-            $table->foreignId('school')->constrained('schools');
-            $table->foreignId('serie')->constrained('series');
-            $table->foreignId('classe')->constrained('classes');
+            $table->foreignId('registration')->constrained('students_registrations');
             $table->foreignId('subject')->constrained('subjects');
             $table->foreignId('teacher')->nullable()->constrained('teachers')->nullOnDelete();
-            $table->foreignId('student')->constrained('students');
             $table->date('date_miss');
         });
     }
