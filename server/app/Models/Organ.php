@@ -3,16 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
 
-class Organ extends Model
+class Organ extends BaseModel
 {
     use HasFactory;
-
-    const S_INACTIVE = 0;
-    const S_ACTIVE = 1;
 
     protected string $table = 'organs';
 
@@ -93,8 +89,8 @@ class Organ extends Model
     public static function list_status():array
     {
         return [
-            ['id' => self::S_INACTIVE, 'title' => 'Inativo'],
-            ['id' => self::S_ACTIVE, 'title' => 'Ativo']
+            ['id' => BaseModel::S_INACTIVE, 'title' => 'Inativo'],
+            ['id' => BaseModel::S_ACTIVE, 'title' => 'Ativo']
         ];
     }
 }

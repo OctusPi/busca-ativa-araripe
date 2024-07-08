@@ -5,11 +5,10 @@ namespace App\Models;
 use App\Utils\Dates;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Student extends Model
+class Student extends BaseModel
 {
     use HasFactory;
 
@@ -51,9 +50,9 @@ class Student extends Model
     public static function list_status():array
     {
         return [
-            ['id' => 1, 'title' => 'Ativo'],
-            ['id' => 2, 'title' => 'Não Residente'],
-            ['id' => 3, 'title' => 'Transferido']
+            ['id' => parent::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => parent::S_NOTFOUND, 'title' => 'Não Residente'],
+            ['id' => parent::S_TRANSFER, 'title' => 'Transferido']
         ];
     }
 }

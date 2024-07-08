@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Registration extends Model
+class Registration extends BaseModel
 {
     use HasFactory;
 
@@ -50,12 +49,11 @@ class Registration extends Model
     public static function list_status():array
     {
         return [
-            ['id' => 1, 'title' => 'Cursando'],
-            ['id' => 2, 'title' => 'Aprovado'],
-            ['id' => 3, 'title' => 'Desistente'],
-            ['id' => 4, 'title' => 'Transferido'],
-            ['id' => 5, 'title' => 'Não Aprovado']
-
+            ['id' => parent::S_ACTIVE, 'title' => 'Cursando'],
+            ['id' => parent::S_APPROVED, 'title' => 'Aprovado'],
+            ['id' => parent::S_INACTIVE, 'title' => 'Desistente'],
+            ['id' => parent::S_TRANSFER, 'title' => 'Transferido'],
+            ['id' => parent::S_DISAPPROVED, 'title' => 'Reprovado']
         ];
     }
 }
