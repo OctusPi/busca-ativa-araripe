@@ -24,7 +24,7 @@ const page = ref({
 })
 
 function recoverPassword(){
-
+    
 }
 
 </script>
