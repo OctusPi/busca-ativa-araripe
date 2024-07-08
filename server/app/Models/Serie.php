@@ -11,7 +11,7 @@ class Serie extends BaseModel
 {
     use HasFactory;
 
-    protected string $table = 'series';
+    protected $table = 'series';
 
     protected $fillable = [
         'organ',

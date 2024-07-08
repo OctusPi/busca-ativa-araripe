@@ -3,16 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule;
 use App\Casts\Json;
 
-class User extends Authenticatable
+class User extends BaseModel
 {
     use HasFactory, Notifiable;
 
-    protected string $table = 'users';
+    protected $table = 'users';
 
     protected $fillable = [
         'name',
@@ -66,30 +65,30 @@ class User extends Authenticatable
     public static function list_profiles():array
     {
         return [
-            ['id' => BaseModel::P_ADMIN, 'title' => 'Adminsitrador'],
-            ['id' => BaseModel::P_MANAGER, 'title' => 'Gestor Municipal'],
-            ['id' => BaseModel::P_TECHNICIAN, 'title' => 'Agente Municipal'],
-            ['id' => BaseModel::P_DIRECTOR, 'title' => 'Diretor Escolar'],
-            ['id' => BaseModel::P_SECRETARY, 'title' => 'Secretário Escolar']
+            ['id' => parent::P_ADMIN, 'title' => 'Adminsitrador'],
+            ['id' => parent::P_MANAGER, 'title' => 'Gestor Municipal'],
+            ['id' => parent::P_TECHNICIAN, 'title' => 'Agente Municipal'],
+            ['id' => parent::P_DIRECTOR, 'title' => 'Diretor Escolar'],
+            ['id' => parent::P_SECRETARY, 'title' => 'Secretário Escolar']
         ];
     }
 
     public static function list_modules():array
     {
         return [
-            ['id' => BaseModel::M_INITIAL, 'title' => 'Acesso Inicial'],
-            ['id' => BaseModel::M_MANAGER, 'title' => 'Gestão'],
-            ['id' => BaseModel::M_USERS, 'title' => 'Cadastro de Usuários'],
-            ['id' => BaseModel::M_ORGANS, 'title' => 'Gestão de Orgão'],
-            ['id' => BaseModel::M_SCHOOLS, 'title' => 'Cadastro de Escolas'],
-            ['id' => BaseModel::M_SERIES, 'title' => 'Gerenciamento de Séries/Anos'],
-            ['id' => BaseModel::M_CLASSES, 'title' => 'Cadastro de Turmas'],
-            ['id' => BaseModel::M_SUBJECTS, 'title' => 'Cadastro de Disciplinas'],
-            ['id' => BaseModel::M_STUDENTS, 'title' => 'Gestão de Estudantes'],
-            ['id' => BaseModel::M_STUDENTS_REG, 'title' => 'Registro de Matrículas'],
-            ['id' => BaseModel::M_TEACHERS, 'title' => 'Cadastro de Professores'],
-            ['id' => BaseModel::M_GRIDS, 'title' => 'Gestão de Grade Educacional'],
-            ['id' => BaseModel::M_FREQUENCIES, 'title' => 'Registro de Frequencias']
+            ['id' => parent::M_INITIAL, 'title' => 'Acesso Inicial'],
+            ['id' => parent::M_MANAGER, 'title' => 'Gestão'],
+            ['id' => parent::M_USERS, 'title' => 'Cadastro de Usuários'],
+            ['id' => parent::M_ORGANS, 'title' => 'Gestão de Orgão'],
+            ['id' => parent::M_SCHOOLS, 'title' => 'Cadastro de Escolas'],
+            ['id' => parent::M_SERIES, 'title' => 'Gerenciamento de Séries/Anos'],
+            ['id' => parent::M_CLASSES, 'title' => 'Cadastro de Turmas'],
+            ['id' => parent::M_SUBJECTS, 'title' => 'Cadastro de Disciplinas'],
+            ['id' => parent::M_STUDENTS, 'title' => 'Gestão de Estudantes'],
+            ['id' => parent::M_STUDENTS_REG, 'title' => 'Registro de Matrículas'],
+            ['id' => parent::M_TEACHERS, 'title' => 'Cadastro de Professores'],
+            ['id' => parent::M_GRIDS, 'title' => 'Gestão de Grade Educacional'],
+            ['id' => parent::M_FREQUENCIES, 'title' => 'Registro de Frequencias']
         ];
     }
 }

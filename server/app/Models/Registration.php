@@ -9,7 +9,7 @@ class Registration extends BaseModel
 {
     use HasFactory;
 
-    protected string $table = 'students_registrations';
+    protected $table = 'students_registrations';
 
     protected $fillable = [
         'organ',

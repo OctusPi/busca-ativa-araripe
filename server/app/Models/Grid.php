@@ -9,7 +9,7 @@ class Grid extends BaseModel
 {
     use HasFactory;
 
-    protected string $table = 'grids';
+    protected $table = 'grids';
     protected $fillable = [
         'organ',
         'school',

@@ -10,7 +10,7 @@ class Subject extends BaseModel
 {
     use HasFactory;
 
-    protected string $table = 'subjects';
+    protected $table = 'subjects';
 
     protected $fillable = ['organ','name','area','description'];
 
