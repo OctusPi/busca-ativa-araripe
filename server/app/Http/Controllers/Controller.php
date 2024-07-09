@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Security\Common;
 use App\Utils\Utils;
 use App\Utils\Notify;
 use App\Middleware\Data;
@@ -23,7 +24,7 @@ class Controller extends BaseController
     protected ?User $user_loged;
     protected ?string $model;
 
-    public function __construct(?string $model = null, int $module_id = User::MOD_INI)
+    public function __construct(?string $model = null, int $module_id = Common::M_INITIAL)
     {
         $this->module_id = $module_id;
         $this->user_loged = Guardian::getUser();
