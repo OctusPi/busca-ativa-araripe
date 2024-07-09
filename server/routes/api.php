@@ -1,8 +1,21 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
+use App\Utils\Notify;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+
+Route::controller(AuthController::class)->group(function () {
+    Route::prefix('/auth')->group(function () {
+        Route::post('/login', 'login');
+        Route::get('/logout', 'logout');
+        Route::post('/active', 'active');
+        Route::post('/recover', 'recover');
+        Route::post('/renew', 'renew');
+    });
+})->name('auth');
+
+
+Route::fallback(function () {
+    return Response()->json(Notify::warning('Destino solicitado não existe...'), 404);
+});

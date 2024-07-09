@@ -1,7 +1,8 @@
 <?php
 
+use App\Utils\Notify;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return Response()->json('Not Found', 404);
+Route::fallback(function () {
+    return Response()->json(Notify::error('Acesso por caminho inválido'), 403);
 });
