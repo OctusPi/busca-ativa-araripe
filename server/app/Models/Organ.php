@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Security\Common;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
@@ -90,8 +91,8 @@ class Organ extends Model
     public static function list_status():array
     {
         return [
-            ['id' => BaseModel::S_INACTIVE, 'title' => 'Inativo'],
-            ['id' => BaseModel::S_ACTIVE, 'title' => 'Ativo']
+            ['id' => Common::S_INACTIVE, 'title' => 'Inativo'],
+            ['id' => Common::S_ACTIVE, 'title' => 'Ativo']
         ];
     }
 }

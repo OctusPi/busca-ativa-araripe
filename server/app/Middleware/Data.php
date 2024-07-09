@@ -2,10 +2,10 @@
 
 namespace App\Middleware;
 
-use App\Models\BaseModel;
 use App\Models\Organ;
 use App\Models\Unit;
 use App\Models\User;
+use App\Security\Common;
 use App\Security\Guardian;
 use Illuminate\Support\Facades\Log;
 
@@ -17,10 +17,10 @@ class Data
 
         if (!is_null($user)) {
 
-            if ((!is_null($user->organs) && !is_null($user->units)) || $user->profile == BaseModel::P_ADMIN) {
+            if ((!is_null($user->organs) && !is_null($user->units)) || $user->profile == Common::P_ADMIN) {
                 $query = $model::query();
 
-                if ($user->profile != BaseModel::P_ADMIN) {
+                if ($user->profile != Common::P_ADMIN) {
                     $conditionsUser = match ($model) {
                         Organ::class => self::conditionsOrgan($user),
                         // Unit::class => self::conditionsUnit($user),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Security\Common;
 use App\Utils\Dates;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,9 +52,9 @@ class Student extends Model
     public static function list_status():array
     {
         return [
-            ['id' => parent::S_ACTIVE, 'title' => 'Ativo'],
-            ['id' => parent::S_NOTFOUND, 'title' => 'Não Residente'],
-            ['id' => parent::S_TRANSFER, 'title' => 'Transferido']
+            ['id' => Common::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => Common::S_NOTFOUND, 'title' => 'Não Residente'],
+            ['id' => Common::S_TRANSFER, 'title' => 'Transferido']
         ];
     }
 }
