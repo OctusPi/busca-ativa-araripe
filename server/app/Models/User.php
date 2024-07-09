@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Validation\Rule;
 use App\Casts\Json;
 
-class User extends BaseModel
+class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
 
@@ -18,7 +20,8 @@ class User extends BaseModel
         'email',
         'username',
         'password',
-        'token',
+        'active_token',
+        'recover_token',
         'organs',
         'schools',
         'profile',

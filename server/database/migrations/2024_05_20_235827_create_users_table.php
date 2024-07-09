@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->string('email', 220);
             $table->string('username')->unique();
             $table->string('password');
-            $table->text('token')->nullable();
+            $table->text('active_token')->nullable();
+            $table->text('recover_token')->nullable();
             $table->json('organs')->nullable();
             $table->json('schools')->nullable();
             $table->integer('profile');

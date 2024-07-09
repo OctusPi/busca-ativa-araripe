@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Frequencie extends BaseModel
+class Frequencie extends Model
 {
     use HasFactory;
 

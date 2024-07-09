@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Security;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class BaseModel extends Model
+
+class Common
 {
 
     // consts profile
@@ -37,14 +36,4 @@ class BaseModel extends Model
     public const S_TRANSFER = 3;
     public const S_NOTFOUND = 4;
     public const S_DISAPPROVED = 5;
-
-    public static function validateFields(?int $id = null): array
-    {
-        return [];
-    }
-
-    public static function validateMsg():array
-    {
-        return [];
-    }
 }

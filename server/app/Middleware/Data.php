@@ -17,7 +17,7 @@ class Data
 
         if (!is_null($user)) {
 
-            if ((!is_null($user->organs) && !is_null($user->units)) || $user->profile == User::PRF_ADMIN) {
+            if ((!is_null($user->organs) && !is_null($user->units)) || $user->profile == BaseModel::P_ADMIN) {
                 $query = $model::query();
 
                 if ($user->profile != BaseModel::P_ADMIN) {

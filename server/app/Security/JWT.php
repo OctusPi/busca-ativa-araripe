@@ -2,16 +2,16 @@
 
 namespace App\Security;
 
-use App\Models\User;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Log;
 use Firebase\JWT\JWT as FirebaseJWT;
+use stdClass;
 
 class JWT
 {
     private static string $algorithm = 'HS256';
     
-    public static function create(User $data):string
+    public static function create(string $data):string
     {
         $key = env('APP_KEY', '');
         $url = env('APP_URL', '');
@@ -27,14 +27,11 @@ class JWT
         return FirebaseJWT::encode($payload, $key, self::$algorithm);
     }
 
-    public static function decoded(?string $token):?User
+    public static function decoded(?string $token):?stdClass
     {
         try {
             if(!is_null($token)) {
-                $key = env('APP_KEY', '');
-                $stdUser = FirebaseJWT::decode($token, new Key($key, self::$algorithm));
-                $user = new User((array) $stdUser->{'data'} ?? []);
-                return $user;
+                return FirebaseJWT::decode($token, new Key(env('APP_KEY', ''), self::$algorithm));
             }
 
             return null;

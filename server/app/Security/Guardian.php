@@ -51,6 +51,11 @@ class Guardian
 
     public static function getUser():?User
     {
-        return JWT::decoded(self::getToken());
+        $jwtUser = JWT::decoded(self::getToken());
+        if(!is_null($jwtUser)){
+            return User::where(['active_token' => $jwtUser->active_token])->first();
+        }
+
+        return null;
     }
 }
