@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
 const axiosInstanceAuth = axios.create({
     baseURL: import.meta.env.VITE_URL_API,
     headers: {
+        'Accept': '*/*',
         'Content-Type':'multipart/form-data',
         'Authorization': 'Bearer '+auth.token
     }

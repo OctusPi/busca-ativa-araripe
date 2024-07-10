@@ -25,6 +25,7 @@ class AuthController extends Controller
             $abilities = $user->profile == Common::P_ADMIN ? ["*"] : array_column($user->modules, 'module');
             return Response()->json([
                 'token' => $user->createToken('authorization', $abilities, now()->addDay())->plainTextToken,
+                'navigation' => $user->modules,
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -59,11 +60,11 @@ class AuthController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function is_active(Request $request)
+    public function active(Request $request)
     {
-        $accessToken = PersonalAccessToken::findToken($request->server('HTTP_AUTHORIZATION'));
+        $accessToken = PersonalAccessToken::findToken(str_replace('Bearer ', '', $request->server('HTTP_AUTHORIZATION')));
 
-        if (!$accessToken || $accessToken->expired()) {
+        if (!$accessToken) {
             return Response()->json(Notify::info('Login expirou, realize o login novamente!'), 403);
         }
 

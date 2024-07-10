@@ -9,7 +9,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('/login', 'login');
         Route::get('/logout/{id}', 'logout');
-        Route::post('/active', 'is_active');
+        Route::get('/active', 'active');
         Route::post('/recover', 'recover');
         Route::post('/renew', 'renew');
     });
