@@ -28,6 +28,7 @@ class Common
     public const M_TEACHERS = 11;
     public const M_GRIDS = 12;
     public const M_FREQUENCIES = 13;
+    public const M_REPOSRTS = 14;
 
     // consts status value
     public const S_INACTIVE = 0;

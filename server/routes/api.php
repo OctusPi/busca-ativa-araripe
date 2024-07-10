@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('/login', 'login');
-        Route::get('/logout', 'logout');
-        Route::post('/active', 'active');
+        Route::get('/logout/{id}', 'logout');
+        Route::post('/active', 'is_active');
         Route::post('/recover', 'recover');
         Route::post('/renew', 'renew');
     });

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'test@example.com',
             'password' => 'senha123',
             'profile'  => 1,
+            'modules'  => json_encode(User::list_modules()),
             'status' => 1
         ]);
     }
