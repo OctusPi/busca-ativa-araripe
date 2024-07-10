@@ -5,28 +5,33 @@ import http from '@/services/http';
 import forms from '@/services/forms';
 import notifys from '@/utils/notifys';
 
-const app  = inject('app')
+const app = inject('app')
 const user = ref(auth.getUser())
 
 const emit = defineEmits(['callAlert'])
 const page = ref({
     data: {
-        username:'',
-        password:''
+        username: '',
+        password: '',
+        showPassword: false
     },
-    rules:{
+    rules: {
         fields: {
-            username:'required|email',
-            password:'required'
+            username: 'required|email',
+            password: 'required'
         },
-        valids:{}
+        valids: {}
     }
 })
 
-function login(){
-    
+const togglePasswordVisibility = () => {
+	page.value.data.showPassword = !page.value.data.showPassword;
+};
+
+function login() {
+
     const validation = forms.checkform(page.value.data, page.value.rules);
-    if(!validation.isvalid){
+    if (!validation.isvalid) {
         emit('callAlert', notifys.warning(validation.message))
         return
     }
@@ -38,17 +43,17 @@ function login(){
     })
 }
 
-function islogged(){
-    
-    if(user.value){
+function islogged() {
+
+    if (user.value) {
         http.get('/auth/check', emit, null, (response) => {
-            if(response.status === 200){ return }
+            if (response.status === 200) { return }
             logout()
         });
     }
 }
 
-function logout(){
+function logout() {
     auth.clear()
     user.value = null
 }
@@ -77,44 +82,73 @@ onMounted(() => {
                 <p class="small txt-color-sec p-0 m-0">Ultimo Acesso: {{ user.last_login }}</p>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <button type="button" class="btn btn-sm btn-outline-warning" @click="logout"><i class="bi bi-door-open me-2"></i> Sair do Sistema</button>
-                    <RouterLink to="/dashboard" class="btn btn-sm btn-outline-primary">Ir para Home <i class="bi bi-house-gear ms-2"></i></RouterLink>
+                    <button type="button" class="btn btn-sm btn-outline-warning" @click="logout"><i
+                            class="bi bi-door-open me-2"></i> Sair do Sistema</button>
+                    <RouterLink to="/dashboard" class="btn btn-sm btn-outline-primary">Ir para Home <i
+                            class="bi bi-house-gear ms-2"></i></RouterLink>
                 </div>
             </div>
 
             <form v-else class="row g-3" @submit.prevent="login">
                 <div class="mb-2">
-                    <label for="username" class="form-label">Usuário</label>
-                    <input type="email" name="username" class="form-control" :class="{'form-control-alert' : page.rules.valids.username}"
-                    id="username" placeholder="nome@example.com" v-model="page.data.username">
+                    <label for="username" class="form-label">Usuário<span class="text-danger">*</span></label>
+                    <input type="email" name="username" class="form-control"
+                        :class="{ 'form-control-alert': page.rules.valids.username }" id="username"
+                        placeholder="nome@example.com" v-model="page.data.username">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label d-flex justify-content-between">
-                        Senha
-                        <RouterLink to="/recover" class="box-link">Esqueceu sua senha?</RouterLink>
+                    <label for="password" class="form-label d-flex align-items-center">
+                        Senha <span class="text-danger"> *</span>
+                        <RouterLink to="/recover" class="box-link ms-auto">Esqueceu sua senha?</RouterLink>
                     </label>
-                    <input type="password" name="password" class="form-control" id="password"
-                    :class="{'form-control-alert' : page.rules.valids.password}"
-                        placeholder="***********" v-model="page.data.password">
+                    
+                    <div class="position-relative">
+                        <input :type="page.data.showPassword ? 'text' : 'password'" name="password" class="form-control" id="password"
+                        :class="{ 'form-control-alert': page.rules.valids.password }" placeholder="***********"
+                        v-model="page.data.password">
+                        <button type="button" class="btn-eye" @click="togglePasswordVisibility">
+							<i :class="page.data.showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+						</button>
+                    </div>
+                    
+
                 </div>
 
                 <div class="mb-4">
-                    <button type="submit" class="btn btn-outline-primary w-100">Entrar <i class="bi bi-check2-circle"></i></button>
+                    <button type="submit" class="btn btn-outline-primary w-100">Entrar <i
+                            class="bi bi-check2-circle"></i></button>
                 </div>
-                
+
 
                 <div class="box-copyr">
                     <p class="txt-color-sec small p-0 m-0 text-center">Todos os direitos reservados.</p>
                     <p class="txt-color-sec small p-0 m-0 text-center">{{ app.copy }}&copy;</p>
                 </div>
-                
+
             </form>
         </div>
     </main>
 </template>
 
 <style>
-    .icon-user{
-        font-size: 3rem;
-    }
+.icon-user {
+    font-size: 3rem;
+}
+
+.position-relative .btn-eye {
+	border: none;
+	background: transparent;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0;
+	cursor: pointer;
+	color: #6c757d;
+}
+
+.position-relative .btn-eye:hover {
+	color: #000;
+}
+
 </style>
