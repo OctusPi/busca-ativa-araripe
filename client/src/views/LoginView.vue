@@ -4,16 +4,17 @@ import auth from '@/stores/auth';
 import http from '@/services/http';
 import forms from '@/services/forms';
 import notifys from '@/utils/notifys';
+import { useRouter } from 'vue-router';
 
 const app = inject('app')
 const user = ref(auth.getUser())
+const router = useRouter()
 
 const emit = defineEmits(['callAlert'])
 const page = ref({
     data: {
-        username: '',
-        password: '',
-        showPassword: false
+        username:'test@example.com',
+        password:'senha123'
     },
     rules: {
         fields: {
@@ -36,26 +37,31 @@ function login() {
         return
     }
 
-    http.post('/auth', page.value.data, emit, (response) => {
+    http.post('/auth/login', page.value.data, emit, (response) => {
         auth.setToken(response.data.token)
         auth.setUser(response.data.user)
         auth.setNavigation(response.data.navigation)
+        if(response.status === 200){
+            router.replace('/home')
+        }
     })
 }
 
-function islogged() {
-
-    if (user.value) {
-        http.get('/auth/check', emit, null, (response) => {
-            if (response.status === 200) { return }
+function islogged(){
+    
+    if(user.value){
+        http.get('/auth/active', emit, null, (response) => {
+            if(response.status === 200){ return }
             logout()
         });
     }
 }
 
-function logout() {
-    auth.clear()
-    user.value = null
+function logout(){
+    http.get(`/auth/logout/${user.value.id}`, emit, () => {
+        auth.clear()
+        user.value = null
+    })
 }
 
 onMounted(() => {
@@ -78,14 +84,12 @@ onMounted(() => {
             <div v-if="user" class="text-center">
                 <i class="bi bi-person-circle icon-user"></i>
                 <h2 class="mt-4">{{ user.name }}</h2>
-                <p class="small txt-color-sec p-0 m-0">Perfil: {{ user.profile }}</p>
+                <p class="small txt-color-sec p-0 m-0">Perfil: {{ user.profile[0].title }}</p>
                 <p class="small txt-color-sec p-0 m-0">Ultimo Acesso: {{ user.last_login }}</p>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <button type="button" class="btn btn-sm btn-outline-warning" @click="logout"><i
-                            class="bi bi-door-open me-2"></i> Sair do Sistema</button>
-                    <RouterLink to="/dashboard" class="btn btn-sm btn-outline-primary">Ir para Home <i
-                            class="bi bi-house-gear ms-2"></i></RouterLink>
+                    <button type="button" class="btn btn-sm btn-outline-warning" @click="logout"><i class="bi bi-door-open me-2"></i> Sair do Sistema</button>
+                    <RouterLink to="/home" class="btn btn-sm btn-outline-primary">Partiu!!! <i class="bi bi-house-gear ms-2"></i></RouterLink>
                 </div>
             </div>
 

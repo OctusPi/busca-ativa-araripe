@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Model;
 
 class Grid extends Model
 {
     use HasFactory;
 
-    protected string $table = 'grids';
+    protected $table = 'grids';
     protected $fillable = [
         'organ',
         'school',

@@ -2,19 +2,17 @@
 
 namespace App\Models;
 
+use App\Security\Common;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Model;
 
 class Organ extends Model
 {
     use HasFactory;
 
-    const S_INACTIVE = 0;
-    const S_ACTIVE = 1;
-
-    protected string $table = 'organs';
+    protected $table = 'organs';
 
     protected $fillable = [
         'name',
@@ -93,8 +91,8 @@ class Organ extends Model
     public static function list_status():array
     {
         return [
-            ['id' => self::S_INACTIVE, 'title' => 'Inativo'],
-            ['id' => self::S_ACTIVE, 'title' => 'Ativo']
+            ['id' => Common::S_INACTIVE, 'title' => 'Inativo'],
+            ['id' => Common::S_ACTIVE, 'title' => 'Ativo']
         ];
     }
 }

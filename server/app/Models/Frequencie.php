@@ -9,7 +9,7 @@ class Frequencie extends Model
 {
     use HasFactory;
 
-    public string $table = 'frequencies';
+    protected $table = 'frequencies';
 
     protected $fillable = [
         'registration',

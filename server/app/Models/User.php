@@ -2,44 +2,28 @@
 
 namespace App\Models;
 
+use App\Casts\Json;
+use App\Security\Common;
+use Illuminate\Validation\Rule;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Validation\Rule;
-use App\Casts\Json;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    const P_ADMIN = 1;
-    const P_MANAGER = 2;
-    const P_TECHNICIAN = 3;
-    const P_DIRECTOR = 4;
-    const P_SECRETARY = 5;
-    
-    const M_INITIAL = 0;
-    const M_MANAGER = 1;
-    const M_USERS = 3;
-    const M_ORGANS = 4;
-    const M_SCHOOLS = 5;
-    const M_SERIES = 6;
-    const M_CLASSES = 7;
-    const M_SUBJECTS = 8;
-    const M_STUDENTS = 9;
-    const M_STUDENTS_REG = 10;
-    const M_TEACHERS = 11;
-    const M_GRIDS = 12;
-    const M_FREQUENCIES = 13;
-
-    protected string $table = 'users';
+    protected $table = 'users';
 
     protected $fillable = [
         'name',
         'email',
         'username',
         'password',
-        'token',
+        'active_token',
+        'recover_token',
         'organs',
         'schools',
         'profile',
@@ -58,8 +42,17 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
-            'organs' => Json::class
+            'organs'   => Json::class,
+            'schools'  => Json::class,
+            'modules'  => Json::class
         ];
+    }
+
+    public function profile():Attribute
+    {
+        return Attribute::make(
+            get: fn(?int $value) => self::list_profiles($value) ?? ''
+        );
     }
 
     public static function validateFields(?int $id = null):array
@@ -81,33 +74,42 @@ class User extends Authenticatable
         ];
     }
 
-    public static function list_profiles():array
+    public static function list_profiles(?int $id = null):string|array|null
     {
-        return [
-            ['id' => self::P_ADMIN, 'title' => 'Adminsitrador'],
-            ['id' => self::P_MANAGER, 'title' => 'Gestor Municipal'],
-            ['id' => self::P_TECHNICIAN, 'title' => 'Agente Municipal'],
-            ['id' => self::P_DIRECTOR, 'title' => 'Diretor Escolar'],
-            ['id' => self::P_SECRETARY, 'title' => 'Secretário Escolar']
+        $profiles = [
+            ['id' => Common::P_ADMIN, 'title' => 'Adminsitrador'],
+            ['id' => Common::P_MANAGER, 'title' => 'Gestor Municipal'],
+            ['id' => Common::P_TECHNICIAN, 'title' => 'Agente Municipal'],
+            ['id' => Common::P_DIRECTOR, 'title' => 'Diretor Escolar'],
+            ['id' => Common::P_SECRETARY, 'title' => 'Secretário Escolar']
         ];
+
+        if($id){
+            return array_filter($profiles, function($item) use($id){
+                return $item['id'] === $id;
+            });
+        }
+
+        return $profiles;
     }
 
     public static function list_modules():array
     {
         return [
-            ['id' => self::M_INITIAL, 'title' => 'Acesso Inicial'],
-            ['id' => self::M_MANAGER, 'title' => 'Gestão'],
-            ['id' => self::M_USERS, 'title' => 'Cadastro de Usuários'],
-            ['id' => self::M_ORGANS, 'title' => 'Gestão de Orgão'],
-            ['id' => self::M_SCHOOLS, 'title' => 'Cadastro de Escolas'],
-            ['id' => self::M_SERIES, 'title' => 'Gerenciamento de Séries/Anos'],
-            ['id' => self::M_CLASSES, 'title' => 'Cadastro de Turmas'],
-            ['id' => self::M_SUBJECTS, 'title' => 'Cadastro de Disciplinas'],
-            ['id' => self::M_STUDENTS, 'title' => 'Gestão de Estudantes'],
-            ['id' => self::M_STUDENTS_REG, 'title' => 'Registro de Matrículas'],
-            ['id' => self::M_TEACHERS, 'title' => 'Cadastro de Professores'],
-            ['id' => self::M_GRIDS, 'title' => 'Gestão de Grade Educacional'],
-            ['id' => self::M_FREQUENCIES, 'title' => 'Registro de Frequencias']
+            ['id' => Common::M_INITIAL, 'title' => 'Acesso Inicial', 'module' => 'initial'],
+            ['id' => Common::M_MANAGER, 'title' => 'Gestão', 'module' => 'manager'],
+            ['id' => Common::M_USERS, 'title' => 'Cadastro de Usuários', 'module' => 'users'],
+            ['id' => Common::M_ORGANS, 'title' => 'Gestão de Orgão', 'module' => 'organs'],
+            ['id' => Common::M_SCHOOLS, 'title' => 'Cadastro de Escolas', 'module' => 'schools'],
+            ['id' => Common::M_SERIES, 'title' => 'Gerenciamento de Séries/Anos', 'module' => 'series'],
+            ['id' => Common::M_CLASSES, 'title' => 'Cadastro de Turmas', 'module' => 'classes'],
+            ['id' => Common::M_SUBJECTS, 'title' => 'Cadastro de Disciplinas', 'module' => 'subjects'],
+            ['id' => Common::M_STUDENTS, 'title' => 'Gestão de Estudantes', 'module' => 'students'],
+            ['id' => Common::M_STUDENTS_REG, 'title' => 'Registro de Matrículas', 'module' => 'students_reg'],
+            ['id' => Common::M_TEACHERS, 'title' => 'Cadastro de Professores', 'module' => 'teachers'],
+            ['id' => Common::M_GRIDS, 'title' => 'Gestão de Grade Educacional', 'module' => 'grids'],
+            ['id' => Common::M_FREQUENCIES, 'title' => 'Registro de Frequencias', 'module' => 'frequencies'],
+            ['id' => Common::M_REPOSRTS, 'title' => 'Relatórios', 'module' => 'reports'],
         ];
     }
 }

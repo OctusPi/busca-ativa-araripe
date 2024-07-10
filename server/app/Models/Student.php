@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use App\Security\Common;
 use App\Utils\Dates;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
     use HasFactory;
 
-    protected string $table = 'students';
+    protected $table = 'students';
 
     protected $fillable = [
         'organ',
@@ -51,9 +52,9 @@ class Student extends Model
     public static function list_status():array
     {
         return [
-            ['id' => 1, 'title' => 'Ativo'],
-            ['id' => 2, 'title' => 'Não Residente'],
-            ['id' => 3, 'title' => 'Transferido']
+            ['id' => Common::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => Common::S_NOTFOUND, 'title' => 'Não Residente'],
+            ['id' => Common::S_TRANSFER, 'title' => 'Transferido']
         ];
     }
 }

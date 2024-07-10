@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Security\Common;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Model;
 
 class Registration extends Model
 {
     use HasFactory;
 
-    protected string $table = 'students_registrations';
+    protected $table = 'students_registrations';
 
     protected $fillable = [
         'organ',
@@ -50,12 +51,11 @@ class Registration extends Model
     public static function list_status():array
     {
         return [
-            ['id' => 1, 'title' => 'Cursando'],
-            ['id' => 2, 'title' => 'Aprovado'],
-            ['id' => 3, 'title' => 'Desistente'],
-            ['id' => 4, 'title' => 'Transferido'],
-            ['id' => 5, 'title' => 'Não Aprovado']
-
+            ['id' => Common::S_ACTIVE, 'title' => 'Cursando'],
+            ['id' => Common::S_APPROVED, 'title' => 'Aprovado'],
+            ['id' => Common::S_INACTIVE, 'title' => 'Desistente'],
+            ['id' => Common::S_TRANSFER, 'title' => 'Transferido'],
+            ['id' => Common::S_DISAPPROVED, 'title' => 'Reprovado']
         ];
     }
 }
