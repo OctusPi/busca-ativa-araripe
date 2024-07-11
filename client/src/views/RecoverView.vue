@@ -42,7 +42,7 @@ function recoverPassword(){
 
             <form class="row g-3" @submit.prevent="recoverPassword">
                 <div class="mb-2">
-                    <label for="username" class="form-label">Usuário</label>
+                    <label for="username" class="form-label">Usuário<span class="text-danger">*</span></label>
                     <input type="email" name="username" class="form-control" :class="{'form-control-alert' : page.rules.valids.username}"
                     id="username" placeholder="nome@example.com" v-model="page.data.username">
                 </div>
