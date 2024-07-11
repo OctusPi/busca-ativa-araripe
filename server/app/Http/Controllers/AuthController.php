@@ -51,7 +51,7 @@ class AuthController extends Controller
             return Response()->json(Notify::success('Saida realizada com sucesso...'));
         } catch (\Throwable $th) {
             Log::error('Falha ao realizar saída: ' . $th->getMessage());
-            return Response()->json(Notify::error('Falha ao realizar logout...'), 500);
+            return Response()->json(Notify::success('Falha ao realizar logout...'), 200);
         }
     }
 
