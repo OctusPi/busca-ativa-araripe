@@ -96,20 +96,20 @@ class User extends Authenticatable
     public static function list_modules():array
     {
         return [
-            ['id' => Common::M_INITIAL, 'title' => 'Acesso Inicial', 'module' => 'initial'],
-            ['id' => Common::M_MANAGER, 'title' => 'Gestão', 'module' => 'manager'],
-            ['id' => Common::M_USERS, 'title' => 'Cadastro de Usuários', 'module' => 'users'],
-            ['id' => Common::M_ORGANS, 'title' => 'Gestão de Orgão', 'module' => 'organs'],
-            ['id' => Common::M_SCHOOLS, 'title' => 'Cadastro de Escolas', 'module' => 'schools'],
-            ['id' => Common::M_SERIES, 'title' => 'Gerenciamento de Séries/Anos', 'module' => 'series'],
-            ['id' => Common::M_CLASSES, 'title' => 'Cadastro de Turmas', 'module' => 'classes'],
-            ['id' => Common::M_SUBJECTS, 'title' => 'Cadastro de Disciplinas', 'module' => 'subjects'],
-            ['id' => Common::M_STUDENTS, 'title' => 'Gestão de Estudantes', 'module' => 'students'],
-            ['id' => Common::M_STUDENTS_REG, 'title' => 'Registro de Matrículas', 'module' => 'students_reg'],
-            ['id' => Common::M_TEACHERS, 'title' => 'Cadastro de Professores', 'module' => 'teachers'],
-            ['id' => Common::M_GRIDS, 'title' => 'Gestão de Grade Educacional', 'module' => 'grids'],
-            ['id' => Common::M_FREQUENCIES, 'title' => 'Registro de Frequencias', 'module' => 'frequencies'],
-            ['id' => Common::M_REPOSRTS, 'title' => 'Relatórios', 'module' => 'reports'],
+            Common::M_INITIAL,
+            Common::M_MANAGER,
+            Common::M_USERS,
+            Common::M_ORGANS,
+            Common::M_SCHOOLS,
+            Common::M_SERIES,
+            Common::M_CLASSES,
+            Common::M_SUBJECTS,
+            Common::M_STUDENTS,
+            Common::M_STUDENTS_REG,
+            Common::M_TEACHERS,
+            Common::M_GRIDS,
+            Common::M_FREQUENCIES,
+            Common::M_REPOSRTS
         ];
     }
 }

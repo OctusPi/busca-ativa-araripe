@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class AuthController extends Controller
+class Authentication extends Controller
 {
     /**
      * Authentication sanctum laravel

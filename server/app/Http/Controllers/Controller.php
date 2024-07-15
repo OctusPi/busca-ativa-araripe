@@ -11,21 +11,18 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    // protected int $module_id;
-    // protected ?User $user_loged;
-    // protected ?string $model;
+    
+    public function __construct(bool $security = true, ?array $authmodel = null)
+    {
+        if($security){
+            $this->middleware('auth:sanctum')->only($authmodel);
+        }
+    }
 
-    // public function __construct(?string $model = null, int $module_id = Common::M_INITIAL)
-    // {
-    //     $this->module_id = $module_id;
-    //     $this->user_loged = Guardian::getUser();
-    //     $this->model = $model;
-    // }
-
-    // public function index()
-    // {
-    //     return response()->json('success', 200);
-    // }
+    public function index()
+    {
+        return response()->json('success');
+    }
 
     // public function validateCheck(string $model, ?array $data = [])
     // {
