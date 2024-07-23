@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --bg-fundo: #f4f4f4;
+    --bg-box: #fefefe;
+    --bg-box-translucid: #edededea;
+    --bg-translucid:#06699b94;
+    --bg-wall: rgba(255, 255, 255, 0.661);
+    --bg-input: #ffffff;
+    --bg-input-focus: #EBEDF3;
+    --bg-input-disabled: #f0f0f0;
+    --bg-input-placeholder: #a9b8c6;
+    --cl-base: #19a6ec;
+    --cl-txt: #2e2e2e;
+    --cl-txt-sec: #494949;
+    --cl-shadow: #e3e3e3;
+    --cl-border: #e2e2e3;
+    --cl-danger: #ff586e;
+    --bd-box: 1px solid #e0e9f3;
+
+}
+
+.dark:root {
+    --bg-fundo: #10101e;
+    --bg-box: #212134;
+    --bg-box-translucid: #19192ce7;
+    --bg-wall: rgba(35, 35, 35, 0.458);
+    --bg-input: #131c2f;
+    --bg-input-focus: #1d273b;
+    --bg-input-disabled: #111720;
+    --bg-input-placeholder: #596e8a;
+    --cl-base: #0da5f0;
+    --cl-hover: #058ed3;
+    --cl-txt: #f0f0f0;
+    --cl-txt-sec: #aec8de;
+    --cl-shadow: #313541;
+    --cl-border: #32323f;
+    --bd-box: 1px solid rgb(40, 40, 55);
+}
+
+* {
+    transition: 0.1s;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-size: 1rem;
+}
+
+*:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

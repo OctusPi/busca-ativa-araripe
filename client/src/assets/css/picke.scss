@@ -1,0 +1,66 @@
+.dp__month_year_select {
+    color: var(--cl-txt) !important;
+}
+
+.dp__month_year_select:hover {
+    background-color: transparent !important;
+}
+
+.dp-custom-calendar {
+    .dp__calendar_header_item {
+        color: var(--cl-txt) !important;
+    }
+}
+
+.dp-custom-input-dtpk {
+    border: 2px solid var(--cl-border) !important;
+    background-color: var(--bg-input) !important;
+    padding: 10px 34px !important;
+    color: var(--cl-txt) !important;
+    font-weight: 600;
+}
+
+.dp-custom-input-dtpk-alert{
+    border: 2px solid var(--cl-danger) !important;
+    background-color: var(--bg-input) !important;
+    padding: 10px 34px !important;
+    color: var(--cl-txt) !important;
+    font-weight: 600;
+}
+
+.dp-custom-cell {
+    border-radius: 50% !important;
+    color: var(--cl-txt) !important;
+}
+
+.dp-custom-cell:hover{
+    background-color: var(--bg-translucid) !important;
+}
+
+.dp-custom-menu {
+    background-color: var(--bg-input) !important;
+    color: var(--cl-txt) !important;
+    border: 2px solid var(--cl-border) !important;
+}
+
+.dp__arrow_top{
+    background-color: var(--cl-border) !important;
+    border: none !important;
+}
+
+.dp__overlay{
+    background-color: var(--bg-input) !important;
+    color: var(--cl-txt) !important;
+}
+
+.dp__active_date{
+    background-color: var(--cl-base) !important;
+}
+
+.dp__time_display{
+    color: var(--cl-txt) !important;
+}
+
+.dp__time_display:hover{
+    background-color: var(--bg-translucid) !important;
+}
