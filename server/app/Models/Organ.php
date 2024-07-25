@@ -11,8 +11,13 @@ class Organ extends Model
 {
     use HasFactory;
 
+    const S_ACTIVE = 1;
+    const S_INACTIVE = 0;
+
     protected $table = 'organs';
     protected $fillable = [
+        'id',
+        'logomarca',
         'name',
         'cnpj',
         'phone',
@@ -21,6 +26,16 @@ class Organ extends Model
         'postalcity',
         'postalcode',
         'status'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array
@@ -42,6 +57,14 @@ class Organ extends Model
         return [
             'required' => 'Campo obrigatório não informado...',
             'unique' => 'Orgão já registrado no sistema...'
+        ];
+    }
+
+    public static function list_status(): array
+    {
+        return [
+            ['id' => self::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => self::S_INACTIVE, 'title' => 'Bloqueado']
         ];
     }
 

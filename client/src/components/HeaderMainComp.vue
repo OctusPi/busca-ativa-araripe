@@ -12,7 +12,9 @@ import UserIdUiComp from '@/components/UserIdUiComp.vue'
 <template>
     <header class="container px-3">
         <div class="title-app">
-            <img src="@/assets/imgs/logo.svg" alt="logomarca">
+            <RouterLink to="/home">
+                <img src="@/assets/imgs/logo.svg" alt="logomarca">
+            </RouterLink>
             <div>
                 <h1>{{ sysapp.name }}</h1>
                 <p>{{ sysapp.desc }}</p>

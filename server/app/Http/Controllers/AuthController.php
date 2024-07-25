@@ -52,7 +52,7 @@ class AuthController extends Controller
                 'token'  => $token->plainTextToken,
                 'user'   => [
                     'name' => $user->name,
-                    'profile' => User::list_profiles()[$user->profile] ?? '',
+                    'profile' => User::list_profiles($user->profile) ?? '',
                     'lastlogin' => Dates::convert($user->lastlogin, Dates::UTC_TIME, Dates::PTBR_TIME),
                     'navigation' => $user->modules
                 ]
@@ -65,12 +65,12 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $tokenData = Guardian::getPersonalToken($request->bearerToken());
+        $tokenData = Guardian::getUserByToken($request->bearerToken());
         if($tokenData){
-            $tokenData->delete();
-            return response()->json(Notify::success("Saída realizada com segurança..."));
+            $tokenData->tokens()->delete();
         }
-
+        
+        return response()->json(Notify::success("Saída realizada com segurança..."));
     }
 
     public function recover(Request $request)

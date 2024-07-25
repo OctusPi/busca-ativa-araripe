@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+
 :root {
     --bg-fundo: #f4f4f4;
     --bg-box: #fefefe;
@@ -11,11 +12,19 @@
     --bg-input-disabled: #f0f0f0;
     --bg-input-placeholder: #a9b8c6;
     --cl-base: #19a6ec;
+    --cl-hover: #058ed3;
     --cl-txt: #2e2e2e;
     --cl-txt-sec: #494949;
     --cl-shadow: #e3e3e3;
     --cl-border: #e2e2e3;
+    --cl-success: #31e7aa;
+    --cl-accept: #19a6ec;
+    --cl-warning: #eed515;
     --cl-danger: #ff586e;
+    --cl-success-hover: #32c393;
+    --cl-accept-hover: #1497d8;
+    --cl-warning-hover: #dac316;
+    --cl-danger-hover: #d64f61;
     --bd-box: 1px solid #e0e9f3;
 
 }

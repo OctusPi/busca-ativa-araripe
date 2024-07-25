@@ -40,7 +40,7 @@ function auth_access(rt){
 </script>
 <template>
     <nav class="container px-3">
-        <div v-if="user.navigation" class="nav-content" :class="{ 'min-view': !show_menu }">
+        <div v-if="user" class="nav-content" :class="{ 'min-view': !show_menu }">
             <ul class="nav-list">
                 <li v-for="item in nav_items" :key="item.label">
                     <div v-if="auth_access(item.to)">
@@ -81,7 +81,7 @@ function auth_access(rt){
     width: 34px;
     height: 34px;
     display: none;
-    margin: 5px 0;
+    margin: 5px 0 10px 0;
 }
 
 .nav-btntoggle img {

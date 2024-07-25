@@ -21,11 +21,6 @@
 body {
     min-height: 100vh;
     background-color: var(--bg-fundo);
-    background-image: url('@/assets/imgs/bg.svg');
-    background-repeat:no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     color: var(--cl-txt);
 }
 
@@ -33,13 +28,14 @@ body {
     min-height: 100vh;
 }
 
-.header-view{
+.header-view {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1000;
 }
 
-.main-view{
+.main-view {
     width: 100%;
     padding: 81px 0 100px 0;
 }
@@ -102,7 +98,20 @@ body {
 
 .form-label {
     font-size: small;
-    font-weight: 700;
+    font-weight: 600;
+    margin-bottom: 4px !important;
+    font-size: 0.8rem;
+}
+
+.form-check-label {
+    font-size: 0.8rem !important;
+    color: var(--cl-txt-sec) !important;
+}
+
+.form-switch {
+    padding-left: 42px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .form-control {
@@ -136,7 +145,7 @@ body {
 }
 
 .form-text {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: var(--cl-txt-sec);
 }
 
@@ -151,7 +160,7 @@ body {
 .box {
     background-color: var(--bg-box);
     border: var(--bd-box);
-    border-radius: 30px;
+    border-radius: 20px;
 }
 
 .container-back-box {
@@ -168,9 +177,106 @@ body {
     width: 48px;
 }
 
+.page-title-bar {
+    display: block;
+    min-width: 5px;
+    min-height: 100%;
+    border-radius: 5px;
+    background-color: var(--cl-base);
+}
+
+.page-title h1 {
+    color: var(--cl-base);
+}
+
+.btn-action {
+    background-color: var(--cl-base);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700 !important;
+}
+
+.btn-action span{
+    font-size: 0.8rem;
+    font-weight: 700 !important;
+}
+
+.btn-action:hover {
+    background-color: var(--cl-hover);
+    color: white;
+}
+
+.btn-icon {
+    z-index: 0 !important;
+}
+
+.btn-form{
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.btn-accept{
+    border: none;
+    background-color: var(--cl-accept);
+    color: white;
+}
+
+.btn-accept:hover{
+    background-color: var(--cl-accept-hover);
+    color: white;
+}
+
+.btn-warning{
+    border: none;
+    background-color: var(--cl-warning);
+    color: darkslategray;
+}
+
+.btn-warning:hover{
+    background-color: var(--cl-warning-hover);
+    color: darkslategray;
+}
+
+.btn-cancel{
+    border: none;
+    background-color: var(--cl-danger);
+    color: white;
+}
+
+.btn-cancel:hover{
+    background-color: var(--cl-danger-hover);
+    color: white;
+}
+
+.title-box h2 {
+    font-size: 0.8rem;
+}
+
+.title-box p {
+    font-size: 0.7rem;
+}
+
+.form-neg-box {
+    margin-left: -3rem !important;
+    margin-right: -3rem !important;
+}
+
 @media(max-width:992px) {
-    .main-view{
+    .main-view {
         width: 100%;
         padding: 81px 0 60px 0;
+    }
+
+    .btn-action {
+        padding: 8px;
+    }
+
+    .btn-action span {
+        display: none;
+    }
+
+    .btn-icon {
+        margin: 0 !important;
+        font-size: 1.3rem !important;
     }
 }

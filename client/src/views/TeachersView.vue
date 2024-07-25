@@ -1,3 +1,3 @@
 <template>
-    <h1>Reports</h1>
+    <h1>Teachers</h1>
 </template>

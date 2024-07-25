@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\Json;
+use App\Providers\Modules;
 use Illuminate\Validation\Rule;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -21,21 +22,6 @@ class User extends Authenticatable
     const p_MANAGER = 2;
     const P_TECGUY = 3;
 
-    const M_INITIAL = 0;
-    const M_FREQ = 1;
-    const M_GRIDS = 2;
-    const M_SERIES = 3;
-    const M_CLASSES = 4;
-    const M_SUBJECTS = 5;
-    const M_TEACHERS = 6;
-    const M_STUDENTS = 7;
-    const M_REGS = 8;
-    const M_MANAGER = 9;
-    const M_ORGANS = 10;
-    const M_SCHOOLS = 11;
-    const M_USERS = 12;
-    const M_REPORTS = 13;
-
     protected $table = 'users';
 
     /**
@@ -44,6 +30,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'username',
@@ -57,6 +44,18 @@ class User extends Authenticatable
         'lastlogin',
         'nowlogin',
         'status'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array
@@ -79,16 +78,6 @@ class User extends Authenticatable
     }
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -99,36 +88,42 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'organs' => Json::class,
-            'units' => Json::class,
+            'schools' => Json::class,
             'modules' => Json::class
         ];
     }
-    public static function list_profiles(): array
+    
+    public static function list_profiles(?int $id = null): null|string|array
     {
-        return [
-            self::P_ADMIN => 'Administrador',
-            self::p_MANAGER => 'Gestor',
-            self::P_TECGUY => 'Técnico',
+        $profiles = [
+            ['id' => self::P_ADMIN, 'title' => 'Administrador'],
+            ['id' => self::p_MANAGER, 'title' => 'Gestor'],
+            ['id' => self::P_TECGUY, 'title' => 'Técnico']
         ];
+
+        if(!is_null($id)) {
+            foreach($profiles as $p) {
+                if($p['id'] == $id) {
+                    return $p['title'];
+                }
+            }
+
+            return null;
+        }
+
+        return $profiles;
     }
 
     public static function list_modules(): array
     {
+        return Modules::getModules();
+    }
+
+    public static function list_status(): array
+    {
         return [
-            ['id' => self::M_INITIAL, 'title' => 'Acesso Inicial', 'module' => 'initial'],
-            ['id' => self::M_FREQ, 'title' => 'Frequência', 'module' => 'frequencies'],
-            ['id' => self::M_SERIES, 'title' => 'Séries', 'module' => 'series'],
-            ['id' => self::M_CLASSES, 'title' => 'Turmas', 'module' => 'classes'],
-            ['id' => self::M_SUBJECTS, 'title' => 'Disciplinas', 'module' => 'subjects'],
-            ['id' => self::M_GRIDS, 'title' => 'Grade', 'module' => 'grids'],
-            ['id' => self::M_TEACHERS, 'title' => 'Professores', 'module' => 'teachers'],
-            ['id' => self::M_STUDENTS, 'title' => 'Alunos', 'module' => 'students'],
-            ['id' => self::M_REGS, 'title' => 'Matrículas', 'module' => 'registrations'],
-            ['id' => self::M_MANAGER, 'title' => 'Gestão', 'module' => 'manager'],
-            ['id' => self::M_ORGANS, 'title' => 'Orgãos', 'module' => 'organs'],
-            ['id' => self::M_SCHOOLS, 'title' => 'Escolas', 'module' => 'schools'],
-            ['id' => self::M_USERS, 'title' => 'Usuários', 'module' => 'users'],
-            ['id' => self::M_REPORTS, 'title' => 'Relatórios', 'module' => 'reports']
+            ['id' => self::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => self::S_INACTIVE, 'title' => 'Bloqueado']
         ];
     }
 }

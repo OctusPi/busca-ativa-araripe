@@ -1,14 +1,18 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import auth from '@/stores/auth';
+import http from '@/services/http';
 
+const emit = defineEmits(['callAlert'])
 const user = ref(auth.getUser())
 const tmss = ref('60:00')
 
 function logout() {
-    auth.clear()
-    user.value = null
-    window.location = '/'
+    http.get('/auth/logout', emit, () => {
+        auth.clear()
+        user.value = null
+        window.location = '/'
+    })
 }
 
 function is_auth() {
@@ -88,7 +92,7 @@ onMounted(() => {
                 </a>
             </li>
             <li class="my-1">
-                <a @click="logout" class="dropdown-item d-flex align-items-center py-2" href="#">
+                <a @click.prevent="logout" class="dropdown-item d-flex align-items-center py-2" href="#">
                     <ion-icon name="log-out-outline" class="fs-5 me-3"></ion-icon>
                     <span>
                         <span class="d-block p-0 m-0 small">Fazer Logout</span>

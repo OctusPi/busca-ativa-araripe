@@ -12,8 +12,7 @@ import NavMainComp from '@/components/NavMainComp.vue'
 
         <main class="container main-view px-3">
             <div class="box p-4">
-                
-                <h1>main</h1>
+                <h1>Dashboard</h1>
             </div>
         </main>
 

@@ -24,29 +24,22 @@ class Page {
                 this.data.value.uiview.register = false
                 break;
             default:
-                this.data.value.uiview.search = true
+                this.data.value.uiview.search = false
                 this.data.value.uiview.register = false
                 break;
         }
     }
     
 
-    save = (over = null) => {
+    save = () => {
         const validation = forms.checkform(this.data.value.data, this.data.value.rules);
         if (!validation.isvalid) {
             this.emit('callAlert', notifys.warning(validation.message))
             return
         }
 
-        const fdata = { ...this.data.value.data }
 
-        if (over) {
-            for (let k in over) {
-                fdata[k] = over[k]
-            }
-        }
-
-        http.post(`${this.data.value.baseURL}/save`, fdata, this.emit, () => {
+        http.post(`${this.data.value.baseURL}/save`, this.data.value.data, this.emit, () => {
             this.list();
         })
     }
