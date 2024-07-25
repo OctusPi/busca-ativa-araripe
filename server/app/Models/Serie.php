@@ -15,12 +15,18 @@ class Serie extends Model
     protected $table = 'series';
 
     protected $fillable = [
+        'id',
         'organ',
         'code',
         'name',
         'course',
         'level',
         'status'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

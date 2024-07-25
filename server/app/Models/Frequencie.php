@@ -14,10 +14,16 @@ class Frequencie extends Model
     protected $table = 'frequencies';
 
     protected $fillable = [
+        'id',
         'registration',
         'subject',
         'teacher',
         'date_miss'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

@@ -20,6 +20,7 @@ class Registration extends Model
     protected $table = 'students_registrations';
 
     protected $fillable = [
+        'id',
         'organ',
         'school',
         'serie',
@@ -27,6 +28,11 @@ class Registration extends Model
         'student',
         'year',
         'status'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

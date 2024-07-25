@@ -18,6 +18,7 @@ class School extends Model
     protected $table = 'schools';
 
     protected $fillable = [
+        'id',
         'organ',
         'inep',
         'name',
@@ -25,6 +26,11 @@ class School extends Model
         'phone',
         'email',
         'status'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

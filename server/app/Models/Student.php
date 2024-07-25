@@ -17,6 +17,7 @@ class Student extends Model
     protected $table = 'students';
 
     protected $fillable = [
+        'id',
         'organ',
         'name',
         'birth',
@@ -32,6 +33,11 @@ class Student extends Model
         'phone',
         'email',
         'status'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function birth():Attribute

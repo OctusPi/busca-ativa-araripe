@@ -13,7 +13,12 @@ class Subject extends Model
 
     protected $table = 'subjects';
 
-    protected $fillable = ['organ', 'name', 'area', 'description'];
+    protected $fillable = ['id', 'organ', 'name', 'area', 'description'];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function rules(): array
     {

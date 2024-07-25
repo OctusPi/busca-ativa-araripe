@@ -14,6 +14,7 @@ class Teacher extends Model
 
     protected $table = 'teachers';
     protected $fillable = [
+        'id',
         'organ',
         'name',
         'registration',
@@ -21,6 +22,11 @@ class Teacher extends Model
         'phone',
         'email',
         'qualification'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

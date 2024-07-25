@@ -12,12 +12,18 @@ class Grid extends Model
 
     protected $table = 'grids';
     protected $fillable = [
+        'id',
         'organ',
         'school',
         'serie',
         'classe',
         'subject',
         'teacher'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array

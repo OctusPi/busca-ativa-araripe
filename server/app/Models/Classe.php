@@ -15,12 +15,18 @@ class Classe extends Model
     protected $table = 'classes';
 
     protected $fillable = [
+        'id',
         'organ',
         'school',
         'serie',
         'name',
         'turn',
         'status'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function rules(): array
