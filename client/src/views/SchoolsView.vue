@@ -102,7 +102,7 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-4">
                             <label for="s-status" class="form-label">Status</label>
                             <select name="s-status" class="form-control" id="s-status"
-                                v-model="pgdata.data.status">
+                                v-model="pgdata.search.status">
                                 <option></option>
                                 <option v-for="s in pgdata.selects.status" :key="s.id" :value="s.id">{{ s.title }}</option>
                             </select>
@@ -217,28 +217,3 @@ onMounted(() => {
         </nav>
     </div>
 </template>
-
-<style scoped>
-    .ct-logo{
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 2px dashed var(--cl-border);
-        overflow: hidden;
-        background-color: var(--bg-fundo)
-    }
-
-    .img-logo{
-        width: 120px;
-    }
-
-    .file-logo{
-        width: 120px;
-        height: 120px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        opacity: 0;
-        cursor: pointer;
-    }
-</style>

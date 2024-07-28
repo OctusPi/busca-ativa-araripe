@@ -20,12 +20,15 @@ return new class extends Migration
             $table->string('cpf', 20)->nullable();
             $table->string('nis', 20)->nullable();
             $table->string('sige', 20);
+            $table->string('censo', 20)->nullable();
             $table->integer('race')->nullable();
             $table->integer('sex')->nullable();
             $table->string('father')->nullable();
             $table->string('mother')->nullable();
-            $table->string('address')->nullable();
-            $table->integer('locality')->nullable();
+            $table->string('street')->nullable();
+            $table->string('neighborhood')->nullable();
+            $table->string('city')->nullable();
+            $table->string('cep', 15)->nullable();
             $table->string('phone', 24)->nullable();
             $table->string('email')->nullable();
             $table->integer('status');

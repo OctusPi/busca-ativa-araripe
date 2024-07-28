@@ -78,11 +78,13 @@ abstract class Controller
 
         try {
             if($request->id){
-                $this->model->where('id', $request->id)->update($dataModel);
-            }else{
-                $this->model->save();
+                $this->model = $this->model->find($request->id);
+                $this->model->fill($dataModel);
             }
-            return response()->json(Notify::success('Dados salvos com sucesso...'),200);
+
+            $this->model->save();
+            
+            return response()->json(Notify::success('Dados salvos com sucesso...'), 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response()->json(Notify::error('Falha ao gravar dados...'), 500);

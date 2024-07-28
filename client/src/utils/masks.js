@@ -21,6 +21,11 @@ const maskcpf = reactive({
     eager: true
 })
 
+const masknis = reactive({
+    mask: "###########",
+    eager: true
+})
+
 const maskcnpj = reactive({
     mask: "##.###.###/####-##",
     eager: true
@@ -63,6 +68,7 @@ export default{
     maskinep,
     maskdate,
     maskcpf,
+    masknis,
     maskcnpj,
     maskphone,
     maskmoney,

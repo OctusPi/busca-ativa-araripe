@@ -261,6 +261,10 @@ body {
     margin-right: -3rem !important;
 }
 
+.modal-content{
+    background-color: var(--bg-box);
+}
+
 @media(max-width:992px) {
     .main-view {
         width: 100%;
