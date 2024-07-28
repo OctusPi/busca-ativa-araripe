@@ -6,7 +6,7 @@ const maskcep = reactive({
 })
 
 const maskinep = reactive({
-    mask: "#####-####",
+    mask: "####-####",
     eager: true
 })
 

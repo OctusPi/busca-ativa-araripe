@@ -1,12 +1,16 @@
 <?php
 namespace App\Http\Middlewares;
 
-use App\Models\Contract;
-use App\Models\Item;
+
+use App\Models\Classe;
+use App\Models\Grid;
 use App\Models\Organ;
-use App\Models\Out;
+use App\Models\Registration;
 use App\Models\School;
-use App\Models\Unit;
+use App\Models\Serie;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,9 +67,16 @@ class Data
 
                 if($user->profile != User::P_ADMIN) {
                     $mods = match ($model) {
-                        Organ::class => self::paramsOrgan($user),
+                        Organ::class  => self::paramsOrgan($user),
                         School::class => self::paramsUnit($user),
-                        User::class => self::paramsUser($user),
+                        User::class   => self::paramsUser($user),
+                        Classe::class, 
+                        Serie::class, 
+                        Student::class, 
+                        Subject::class, 
+                        Teacher::class => self::paramsGenericOrgan($user),
+                        Grid::class, 
+                        Registration::class => self::paramsGenericUnit($user),
                         default => null
                     };
 
@@ -119,7 +130,7 @@ class Data
     private static function paramsUnit($user): array
     {
         $params = [];
-        $idsUnit = array_column($user->units, "id");
+        $idsUnit = array_column($user->schools, "id");
 
         if (!is_null($idsUnit)) {
             foreach ($idsUnit as $id) {
@@ -156,7 +167,7 @@ class Data
 
         if (!is_null($idsUnit)) {
             foreach ($idsUnit as $id) {
-                $params[] = (object) ['column' => 'unit', 'operator' => '=', 'value' => $id];
+                $params[] = (object) ['column' => 'school', 'operator' => '=', 'value' => $id];
             }
         }
 

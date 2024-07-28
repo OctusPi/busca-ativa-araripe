@@ -79,8 +79,8 @@ onMounted(() => {
                 <div class="page-title d-flex">
                     <div class="page-title-bar me-1"></div>
                     <div>
-                        <h1 class="m-0 p-0">Gestão de Usuários</h1>
-                        <p class="m-0 p-0 form-text">Credencimento de usuários para acesso ao sistema</p>
+                        <h1 class="m-0 p-0">Gestão de Orgão Municipal</h1>
+                        <p class="m-0 p-0 form-text">Credencimento de orgão para acesso ao sistema</p>
                     </div>
                 </div>
                 <div class="page-actions d-flex align-items-center">
