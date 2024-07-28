@@ -63,7 +63,7 @@ abstract class Controller
 
         return null;
     }
-    
+
     public final function base_save(Request $request, array $overrite = [])
     {
         $this->check_auth($request);
@@ -94,7 +94,7 @@ abstract class Controller
         $this->check_auth($request);
 
         $query = $this->model->where('id', $request->id)->with($with)->first();
-        
+
         if(!is_null($query)){
             return response()->json($query->toArray(),200);
         }
@@ -163,5 +163,10 @@ abstract class Controller
     public function delete(Request $request)
     {
         return $this->base_delete($request);
+    }
+
+    public function selects(Request $request)
+    {
+        return [];
     }
 }

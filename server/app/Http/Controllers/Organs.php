@@ -18,7 +18,7 @@ class Organs extends Controller
         return $this->base_list($request, ['name', 'cnpj', 'status'], ['name']);
     }
 
-    public function selects()
+    public function selects(Request $request)
     {
         return response()->json([
             'status' => Organ::list_status()

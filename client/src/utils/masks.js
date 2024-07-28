@@ -5,6 +5,12 @@ const maskcep = reactive({
     eager: true
 })
 
+const maskinep = reactive({
+    mask: "#####-####",
+    eager: true
+})
+
+
 const maskdate = reactive({
     mask: "##/##/####",
     eager: true
@@ -54,6 +60,7 @@ const masknumbs = reactive({
 
 export default{
     maskcep,
+    maskinep,
     maskdate,
     maskcpf,
     maskcnpj,

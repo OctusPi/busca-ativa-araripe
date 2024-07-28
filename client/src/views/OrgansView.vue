@@ -207,7 +207,7 @@ onMounted(() => {
                             <label for="postalcode" class="form-label">CEP</label>
                             <input type="text" name="postalcode" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.postalcode }" id="postalcode"
-                                placeholder="00000-000" v-model="pgdata.data.postalcode">
+                                placeholder="00000-000" v-model="pgdata.data.postalcode" v-maska:[masks.maskcep]>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="phone" class="form-label">Telefone</label>

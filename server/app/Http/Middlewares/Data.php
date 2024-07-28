@@ -5,6 +5,7 @@ use App\Models\Contract;
 use App\Models\Item;
 use App\Models\Organ;
 use App\Models\Out;
+use App\Models\School;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class Data
 
     public static function find(string $model, array $params = [], ?array $order = null, ?array $with = null, ?array $between = null){
         $query = self::query($model, $params, $order, $with, $between);
-        
+
         if(!is_null($query)){
             return $query->get();
         }
@@ -25,7 +26,7 @@ class Data
     public static function findOne(string $model, array $params = [], ?array $order = null, ?array $with = null, ?array $between = null)
     {
         $query = self::query($model, $params, $order, $with, $between);
-        
+
         if(!is_null($query)){
             return $query->first();
         }
@@ -62,11 +63,9 @@ class Data
 
                 if($user->profile != User::P_ADMIN) {
                     $mods = match ($model) {
-                        Contract::class, Item::class => self::paramsGenericOrgan($user),
                         Organ::class => self::paramsOrgan($user),
-                        Unit::class => self::paramsUnit($user),
+                        School::class => self::paramsUnit($user),
                         User::class => self::paramsUser($user),
-                        Out::class => self::paramsGeneric($user),
                         default => null
                     };
 
@@ -178,15 +177,15 @@ class Data
                 if(is_array($value)) {
                     if(!isset($value['mode']) || $value['mode'] === 'AND') {
                         $ands[] = (object) [
-                            'column' => $value['column'], 
-                            'operator' => $value['operator'] ?? 'LIKE', 
+                            'column' => $value['column'],
+                            'operator' => $value['operator'] ?? 'LIKE',
                             'value' => $value['value']
                         ];
                     }
                 }else{
                     $ands[] = (object) [
-                        'column' => $key, 
-                        'operator' => 'LIKE', 
+                        'column' => $key,
+                        'operator' => 'LIKE',
                         'value' => $value
                     ];
                 }
@@ -205,8 +204,8 @@ class Data
             if(is_array($param)){
                 if (isset($param['mode']) && $param['mode'] === 'OR') {
                     $ors[] = (object)[
-                        'column' => $param['column'], 
-                        'operator' => $param['operator'] ?? 'LIKE', 
+                        'column' => $param['column'],
+                        'operator' => $param['operator'] ?? 'LIKE',
                         'value' => $param['value']
                     ];
                 }
