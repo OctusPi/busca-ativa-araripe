@@ -66,7 +66,7 @@ onMounted(() => {
             </li>
             <li class="my-1">
                 <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                    <ion-icon name="albums-outline" class="fs-5 me-3"></ion-icon>
+                    (00) 91234-5678 <ion-icon name="albums-outline" class="fs-5 me-3"></ion-icon>
                     <span>
                         <span class="d-block p-0 m-0 small">Perfil</span>
                         <span class="d-block p-0 m-0 small fw-bolder">{{ user.profile }}</span>

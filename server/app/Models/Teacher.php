@@ -57,4 +57,17 @@ class Teacher extends Model
     {
         return $this->belongsTo(Grid::class);
     }
+
+    public static function list_qualifications():array
+    {
+        return [
+            ['id' => 1, 'title' => 'Graduação Completa'],
+            ['id' => 2, 'title' => 'Graduação em Andamento'],
+            ['id' => 3, 'title' => 'Especialização Completa'],
+            ['id' => 4, 'title' => 'Especialização em Andamento'],
+            ['id' => 5, 'title' => 'Mestrado Completo'],
+            ['id' => 6, 'title' => 'Doutorado Completo'],
+            ['id' => 7, 'title' => 'Doutorado em Andamento'],
+        ];
+    }
 }

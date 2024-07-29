@@ -1,4 +1,4 @@
-# Projeto Busca Ativa Escolar Araripe
+# Projeto Educa Araripe
 
 Este é um projeto que utiliza Laravel como backend e Vue.js como frontend. Este README fornece as instruções para configurar o ambiente de desenvolvimento, construir o projeto e rodar o servidor.
 
@@ -8,7 +8,6 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
 - [PHP](https://www.php.net/downloads) >= 8.1
 - [Composer](https://getcomposer.org/)
-- [Mysql](https://www.mysql.com/)
 - [Node.js](https://nodejs.org/) >= 18.x
 - [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
 
@@ -28,7 +27,7 @@ Clone o repositório do projeto:
     cp .env.example .env
     php artisan key:generate
     php artisan migrate
-    php artisan make:bigboss
+    php artisan db:seed
    ```
 
 2. Inicie o servidor de desenvolvimento do Laravel:
