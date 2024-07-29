@@ -15,6 +15,10 @@ class Student extends Model
 {
     use HasFactory;
 
+    const S_ACTIVE = 1;
+    const S_MOVED = 2;
+    const S_NOTFOUND = 3;
+    
     protected $table = 'students';
 
     protected $fillable = [
@@ -26,8 +30,8 @@ class Student extends Model
         'sex',
         'cpf',
         'nis',
-        'sige',
-        'censo',
+        'id_sige',
+        'id_censo',
         'father',
         'mother',
         'street',
@@ -59,7 +63,7 @@ class Student extends Model
             'name'  => 'required',
             'birth' => 'required',
             'mother'=> 'required',
-            'sige'  => ['required', Rule::unique('students', 'sige')->ignore($this->id)],
+            'id_sige'  => ['required', Rule::unique('students', 'id_sige')->ignore($this->id)],
             'status' => 'required'
         ];
     }
@@ -105,9 +109,9 @@ class Student extends Model
     public static function list_status():array
     {
         return [
-            ['id' => 1, 'title' => 'Ativo'],
-            ['id' => 2, 'title' => 'Não Residente'],
-            ['id' => 3, 'title' => 'Não Localizado']
+            ['id' => self::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => self::S_MOVED, 'title' => 'Não Residente'],
+            ['id' => self::S_NOTFOUND, 'title' => 'Não Localizado']
         ];
     }
 }

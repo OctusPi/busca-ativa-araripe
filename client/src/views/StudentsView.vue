@@ -3,12 +3,13 @@ import { onMounted, ref, watch } from 'vue'
 
 import Page from '@/services/page';
 import masks from '@/utils/masks';
+import dates from '@/utils/dates';
 
 import HeaderMainComp from '@/components/HeaderMainComp.vue'
 import NavMainComp from '@/components/NavMainComp.vue'
 import HeaderBoxUiComp from '@/components/HeaderBoxUiComp.vue';
 import TableList from '@/components/TableList.vue';
-import dates from '@/utils/dates';
+import http from '@/services/http';
 
 const pgdata = ref({
     baseURL: '/students',
@@ -16,25 +17,27 @@ const pgdata = ref({
     data: {},
     dataimport: {
         info: 'Selecione um arquivo *.json',
+        organ: null,
         school: null,
         serie: null,
         classe: null,
-        year: dates.getYearNow(),
+        year: null,
+        years: dates.listYears(2022),
         header: [
-            { key: 'name', title: 'NOME'},
-            { key: 'birth', title: 'NASCIMENTO'},
-            { key: 'cpf', title: 'CPF'},
-            { key: 'id_censo', title: 'ID CENSO'},
-            { key: 'id_sige', title: 'ID SIGE'},
-            { key: 'street', title: 'ENDEREÇO', sub:[{key:'neighborhood'}, {key:'city'}, {key:'cep'}]},
-            { title: 'E-MAIL', sub:[{key:'email'}]},
+            { key: 'name', title: 'NOME' },
+            { key: 'birth', title: 'NASCIMENTO' },
+            { key: 'cpf', title: 'CPF' },
+            { key: 'id_censo', title: 'ID CENSO' },
+            { key: 'id_sige', title: 'ID SIGE' },
+            { key: 'street', title: 'ENDEREÇO', sub: [{ key: 'neighborhood' }, { key: 'city' }, { key: 'cep' }] },
+            { title: 'E-MAIL', sub: [{ key: 'email' }] },
             { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] }
         ],
         import: []
     },
     search: {},
     dataheader: [
-        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'sige', title: 'ID. Sige: ' }] },
+        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
         { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
         { key: 'city', title: 'LOCALIZAÇÃO', sub: [{ key: 'street' }, { key: 'neighborhood' }] },
         { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
@@ -47,7 +50,8 @@ const pgdata = ref({
         schools: [],
         series: [],
         classes: [],
-        years: dates.listYears(2022)
+        races: [],
+        sexs: []
     },
     rules: {
         fields: {
@@ -66,37 +70,56 @@ const emit = defineEmits(['callAlert', 'callRemove'])
 const props = defineProps({ datalist: { type: Array, default: () => [] } })
 const page = new Page(pgdata, emit)
 
-function handleFile(e){
+function importReader(e) {
     const file = e.target.files[0]
-    if(!file){
+    if (!file) {
         pgdata.value.dataimport.info = 'Selecione um arquivo *.json'
         return
     }
 
-    if(file.type !== 'application/json'){
+    if (file.type !== 'application/json') {
         pgdata.value.dataimport.info = 'Arquivo inválido selecionado...'
         return
     }
 
-    pgdata.value.dataimport.info = `Arquivo: ${file.name} - Tamanho: ${(file.size/1024).toFixed(2)} kb`
+    pgdata.value.dataimport.info = `Arquivo: ${file.name} - Tamanho: ${(file.size / 1024).toFixed(2)} kb`
 
     const reader = new FileReader()
-    reader.onload = function(e){
+    reader.onload = function (e) {
         try {
             pgdata.value.dataimport.import = JSON.parse(e.target.result)
-            console.log(e.target.result)
         } catch (error) {
             pgdata.value.dataimport.info = 'Falha ao ler dados...'
             pgdata.value.dataimport.import = []
         }
     }
 
-    reader.onerror = function(e){
+    reader.onerror = function (e) {
         pgdata.value.dataimport.info = `Falha ao ler dados: ${e}`
     }
-    
+
     reader.readAsText(file)
 
+}
+
+function importClear() {
+    pgdata.value.dataimport.import = []
+    pgdata.value.dataimport.info = 'Selecione um arquivo *.json'
+}
+
+function importStudents() {
+    const data = { 
+        organ: pgdata.value.dataimport.organ,
+        school: pgdata.value.dataimport.school,
+        serie: pgdata.value.dataimport.serie,
+        classe: pgdata.value.dataimport.classe,
+        year: pgdata.value.dataimport.year,
+        import: pgdata.value.dataimport.import
+     }
+    console.log(data)
+    http.post(`${pgdata.value.baseURL}/import`, data, emit, () => {
+        importClear()
+    })
 }
 
 watch(() => props.datalist, (newdata) => {
@@ -124,10 +147,21 @@ onMounted(() => {
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-sm-12">
+                            <label for="i-organ" class="form-label">Orgão</label>
+                            <select @change="page.selects('organ', pgdata.dataimport.organ)" name="i-organ" id="i-organ"
+                                class="form-control" v-model="pgdata.dataimport.organ">
+                                <option></option>
+                                <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ `${s.name} /
+                                    CNPJ: ${s.cnpj}` }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
                             <label for="datafile" class="form-label">Selecionar Arquivo (*.json)</label>
                             <div class="ct-file-import">
-                                <p class="file-description">{{ pgdata.dataimport.info }}</p>
-                                <input @change="handleFile" type="file" name="datafile" class="input-file-import" accept="application/json">
+                                <span class="file-description p-0 m-0">{{ pgdata.dataimport.info }}</span>
+                                <input @change="importReader" type="file" name="datafile" class="input-file-import"
+                                    accept="application/json">
                             </div>
                         </div>
                     </div>
@@ -162,7 +196,7 @@ onMounted(() => {
                                         </div>
                                         <div class="col-sm-12 col-md-2">
                                             <label for="i-serie" class="form-label">Série</label>
-                                            <select name="name" class="form-control" id="i-serie"
+                                            <select @change="page.selects('school', `${pgdata.dataimport.school},${pgdata.dataimport.serie}`)" name="name" class="form-control" id="i-serie"
                                                 v-model="pgdata.dataimport.serie">
                                                 <option></option>
                                                 <option v-for="s in pgdata.selects.series" :key="s.id" :value="s.id">{{
@@ -183,8 +217,8 @@ onMounted(() => {
                                             <select name="name" class="form-control" id="i-year"
                                                 v-model="pgdata.dataimport.year">
                                                 <option></option>
-                                                <option v-for="s in pgdata.selects.years" :key="s.id" :value="s.id">{{
-                                                    s.title }}</option>
+                                                <option v-for="y in pgdata.dataimport.years" :key="y" :value="y">{{ y }}
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -193,18 +227,19 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <div v-if="pgdata.dataimport.import.length" class="form-neg-box">
-                        <TableList :header="pgdata.dataimport.header" :body="pgdata.dataimport.import" :actions="[]"/>
+                    <div v-if="pgdata.dataimport.import.length">
+                        <TableList :header="pgdata.dataimport.header" :body="pgdata.dataimport.import" :actions="[]" />
                     </div>
 
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-form btn-danger d-flex align-items-center"
+                    <button @click="importClear" type="button" class="btn btn-form btn-danger d-flex align-items-center"
                         data-bs-dismiss="modal">
                         <ion-icon name="close-circle-outline" class="fs-6 me-1"></ion-icon>
                         Cancelar
                     </button>
-                    <button type="button" class="btn btn-form btn-accept d-flex align-items-center mx-2">
+                    <button @click="importStudents" type="button"
+                        class="btn btn-form btn-accept d-flex align-items-center mx-2">
                         <ion-icon name="checkmark-circle-outline" class="fs-6 me-1"></ion-icon>
                         Confirmar
                     </button>
@@ -364,12 +399,12 @@ onMounted(() => {
                             <label for="sige" class="form-label">ID. Sige</label>
                             <input type="text" name="sige" class="form-control" id="sige"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.sige }" placeholder="0000000000000"
-                                v-model="pgdata.data.sige">
+                                v-model="pgdata.data.id_sige">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="censo" class="form-label">ID. Censo</label>
                             <input type="text" name="censo" class="form-control" id="censo" placeholder="0000000000000"
-                                v-model="pgdata.data.censo">
+                                v-model="pgdata.data.id_censo">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="cpf" class="form-label">CPF</label>
@@ -461,9 +496,8 @@ onMounted(() => {
 .ct-file-import {
     position: relative !important;
     width: 100%;
-    height: 80px;
+    height: 65px;
     padding: 20px;
-    line-height: 40px;
     text-align: center;
     border: 2px dashed var(--cl-base);
     border-radius: 10px;
@@ -476,7 +510,7 @@ onMounted(() => {
 .input-file-import {
     position: absolute;
     width: 100%;
-    height: 80px;
+    height: 65px;
     left: 0;
     top: 0;
     opacity: 0;

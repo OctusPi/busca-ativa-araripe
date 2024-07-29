@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('birth');
             $table->string('cpf', 20)->nullable();
             $table->string('nis', 20)->nullable();
-            $table->string('sige', 20);
-            $table->string('censo', 20)->nullable();
+            $table->string('id_sige', 20);
+            $table->string('id_censo', 20)->nullable();
             $table->integer('race')->nullable();
             $table->integer('sex')->nullable();
             $table->string('father')->nullable();
