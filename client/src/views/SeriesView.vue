@@ -163,7 +163,7 @@ onMounted(() => {
                             <label for="code" class="form-label">Código</label>
                             <input type="text" name="code" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.code }" id="code"
-                                placeholder="Definição Unidade" v-model="pgdata.data.code">
+                                placeholder="000000" v-model="pgdata.data.code">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="name" class="form-label">Série/Ano</label>
