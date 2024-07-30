@@ -69,6 +69,7 @@ class Page {
     }
 
     list = () => {
+        this.data.value.search.sent = true
         http.post(`${this.data.value.baseURL}/list`, this.data.value.search, this.emit, (response) => {
             this.data.value.datalist = response.data ?? []
             this.ui('list')

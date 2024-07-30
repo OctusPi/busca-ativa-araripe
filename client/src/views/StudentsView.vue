@@ -35,7 +35,9 @@ const pgdata = ref({
         ],
         import: []
     },
-    search: {},
+    search: {
+        sent:false
+    },
     dataheader: [
         { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
         { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
@@ -336,7 +338,7 @@ onMounted(() => {
                 <HeaderBoxUiComp icon="keypad-outline" title="Lista de Alunos Registrados"
                     desc="Listagem de alunos registrados junto ao sistema" />
 
-                <div v-if="Object.keys(pgdata.search).length" class="form-neg-box">
+                <div v-if="pgdata.search.sent" class="form-neg-box">
                     <TableList :header="pgdata.dataheader" :body="pgdata.datalist" :actions="['update', 'delete']"
                         :casts="{
                             organ: pgdata.selects.organs,
