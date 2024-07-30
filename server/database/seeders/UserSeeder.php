@@ -2,33 +2,39 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Serie;
 use App\Models\Student;
-use App\Models\Teacher;
-use App\Models\School;
 use App\Models\Organ;
+use App\Models\School;
+use App\Models\Teacher;
 use App\Models\Classe;
+use App\Models\Subject;
+use App\Models\Grid;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+
+class UserSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(?array $data = null): void
     {
-        // User::factory(10)->create();
-        // Serie::factorty(10)->create();
-        Student::factorty(10)->create();
-        Organ::factorty(10)->create();
-        School::factorty(10)->create();
-        Teacher::factorty(10)->create();
-        Classe::factorty(10)->create();
+        // Cria registros para os modelos
+        Organ::factory(5)->create();
+        School::factory(10)->create();
+        Serie::factory(10)->create();
+        Classe::factory(10)->create();
+        Subject::factory(10)->create();
+        Teacher::factory(10)->create();
+        Student::factory(10)->create();
+        Grid::factory(10)->create();
 
+        // Cria usuários com dados específicos
+    
         if($data){
             $data['profile'] = User::P_ADMIN;
             $data['modules'] = User::list_modules();
@@ -36,7 +42,7 @@ class DatabaseSeeder extends Seeder
             User::factory()->create($data);
         }else{
             User::factory()->create([
-                'name' => 'Test User',
+                'name' => 'Octus',
                 'email' => 'octus@mail.com',
                 'username' => 'octus@mail.com',
                 'password' => Hash::make('senha123'),
