@@ -30,8 +30,8 @@ const pgdata = ref({
             { key: 'id_censo', title: 'ID CENSO' },
             { key: 'id_sige', title: 'ID SIGE' },
             { key: 'street', title: 'ENDEREÇO', sub: [{ key: 'neighborhood' }, { key: 'city' }, { key: 'cep' }] },
-            { title: 'E-MAIL', sub: [{ key: 'email' }] },
-            { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] }
+            { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
+            { title: ''}
         ],
         import: []
     },
@@ -128,7 +128,6 @@ watch(() => props.datalist, (newdata) => {
 
 onMounted(() => {
     page.selects()
-    page.list()
 })
 
 </script>
@@ -139,7 +138,7 @@ onMounted(() => {
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content p-4">
                 <div class="modal-header border-0">
-                    <h1 class="modal-title fs-5" id="modalImportStudentsLabel">Importar Lote de Alunos</h1>
+                    <h1 class="modal-title fs-5" id="modalImportStudentsLabel">Importar Alunos</h1>
                     <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close">
                         <ion-icon name="close-outline" class="fs-5"></ion-icon>
                     </button>
@@ -151,8 +150,7 @@ onMounted(() => {
                             <select @change="page.selects('organ', pgdata.dataimport.organ)" name="i-organ" id="i-organ"
                                 class="form-control" v-model="pgdata.dataimport.organ">
                                 <option></option>
-                                <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ `${s.name} /
-                                    CNPJ: ${s.cnpj}` }}
+                                <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ s.name }}
                                 </option>
                             </select>
                         </div>
@@ -228,7 +226,7 @@ onMounted(() => {
                     </div>
 
                     <div v-if="pgdata.dataimport.import.length">
-                        <TableList :header="pgdata.dataimport.header" :body="pgdata.dataimport.import" :actions="[]" />
+                        <TableList :header="pgdata.dataimport.header" :body="pgdata.dataimport.import" />
                     </div>
 
                 </div>
@@ -338,7 +336,7 @@ onMounted(() => {
                 <HeaderBoxUiComp icon="keypad-outline" title="Lista de Alunos Registrados"
                     desc="Listagem de alunos registrados junto ao sistema" />
 
-                <div class="form-neg-box">
+                <div v-if="Object.keys(pgdata.search).length" class="form-neg-box">
                     <TableList :header="pgdata.dataheader" :body="pgdata.datalist" :actions="['update', 'delete']"
                         :casts="{
                             organ: pgdata.selects.organs,
@@ -346,6 +344,11 @@ onMounted(() => {
                             sex: pgdata.selects.sexs,
                             status: pgdata.selects.status
                         }" @action:update="page.update" @action:delete="page.remove" />
+                </div>
+
+                <div class="text-center" v-else>
+                    <ion-icon name="chatbox-ellipses-outline" class="form-text fs-3"></ion-icon>
+                    <p class="form-text">Aplique o filtro na opção localizar para visualizar os alunos...</p>
                 </div>
             </div>
 
@@ -484,6 +487,7 @@ onMounted(() => {
                     </div>
                 </form>
             </div>
+            
         </main>
 
         <nav class="nav-view">
