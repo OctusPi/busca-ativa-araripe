@@ -17,7 +17,7 @@ class Teachers extends Controller
 
     public function list(Request $request)
     {
-        return $this->base_list($request, ['name'], ['name']);
+        return $this->base_list($request, ['name', 'cpf', 'qualification'], ['name']);
     }
 
     public function selects(Request $request)
