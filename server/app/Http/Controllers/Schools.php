@@ -14,6 +14,11 @@ class Schools extends Controller
         parent::__construct(School::class, Modules::M_SCHOOLS);
     }
 
+    public function list(Request $request)
+    {
+        return $this->base_list($request, ['name', 'inep', 'status'], ['name']);
+    }
+
     public function selects(Request $request)
     {
         return response()->json(
