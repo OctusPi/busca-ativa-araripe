@@ -12,6 +12,9 @@ class Serie extends Model
 {
     use HasFactory;
 
+    const S_ACTIVE = 1;
+    const S_INACTIVE = 0;
+
     protected $table = 'series';
 
     protected $fillable = [
@@ -71,19 +74,30 @@ class Serie extends Model
 
     public static function list_courses():array{
         return [
-            ['id' => 1, 'title' => '']
+            ['id' => 1, 'title' => 'Alfabetização'],
+            ['id' => 2, 'title' => 'Fundamental I'],
+            ['id' => 3, 'title' => 'Fundamental II'],
+            ['id' => 4, 'title' => 'Ensino Médio Regular'],
+            ['id' => 5, 'title' => 'Ensino Médio Especial'],
+            ['id' => 6, 'title' => 'Graduação/Especialização/PHD'],
+            ['id' => 7, 'title' => 'Outro']
         ];
     }
 
     public static function list_levels():array{
         return [
-            ['id' => 1, 'title' => '']
+            ['id' => 1, 'title' => 'Infantil'],
+            ['id' => 2, 'title' => 'Fundamental'],
+            ['id' => 3, 'title' => 'Médio'],
+            ['id' => 4, 'title' => 'Superior'],
+            ['id' => 5, 'title' => 'Outro']
         ];
     }
 
     public static function list_status():array{
         return [
-            ['id' => 1, 'title' => '']
+            ['id' => self::S_ACTIVE, 'title' => 'Ativo'],
+            ['id' => self::S_INACTIVE, 'title' => 'Inativo'],
         ];
     }
 }
