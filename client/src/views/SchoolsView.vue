@@ -19,7 +19,7 @@ const pgdata = ref({
         { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'organ', cast:'name' }] },
         { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
         { key: 'postalcity', title: 'LOCALIZAÇÃO', sub: [{ key: 'address' }] },
-        { key: 'status', cast:'title', title: 'INEP' }
+        { key: 'status', cast:'title', title: 'STATUS' }
     ],
     datalist:[],
     selects:{

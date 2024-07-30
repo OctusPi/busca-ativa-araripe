@@ -52,6 +52,11 @@ Route::middleware('auth:sanctum')->group(function () {
     common('/teachers', Teachers::class);
     common('/grids', Grids::class);
     common('/reports', Reports::class);
+
+    
+    Route::prefix('/students')->controller(Students::class)->group(function () {
+        Route::post('/import','import');
+    });
 });
 
 // fallback 404

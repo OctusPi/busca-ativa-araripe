@@ -52,7 +52,7 @@ abstract class Controller
         }
     }
 
-    private function validate(?array $data = []):?string
+    public function validate(?array $data = []):?string
     {
         if(method_exists($this->model, 'rules') && method_exists( $this->model, 'messages')) {
             $validator = Validator::make($data, $this->model->rules(), $this->model->messages());
