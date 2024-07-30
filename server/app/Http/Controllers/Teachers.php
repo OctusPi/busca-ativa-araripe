@@ -15,6 +15,11 @@ class Teachers extends Controller
         parent::__construct(Teacher::class, Modules::M_TEACHERS);
     }
 
+    public function list(Request $request)
+    {
+        return $this->base_list($request, ['name'], ['name']);
+    }
+
     public function selects(Request $request)
     {
         return response()->json(
