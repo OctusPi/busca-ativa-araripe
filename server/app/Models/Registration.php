@@ -46,7 +46,7 @@ class Registration extends Model
             'status'=> 'required',
             'student'  => ['required', Rule::unique('students_registrations', 'student')->where(function($query){
                 return $query->where('year', $this->year);
-            })]
+            })->ignore($this->id)]
         ];
     }
 

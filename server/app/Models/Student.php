@@ -63,7 +63,9 @@ class Student extends Model
             'name'  => 'required',
             'birth' => 'required',
             'mother'=> 'required',
-            'id_sige'  => ['required', Rule::unique('students', 'id_sige')->ignore($this->id)],
+            'id_sige'  => ['required', Rule::unique('utudents', 'id_sige')->where(function($query){
+                return $query->where('organ', $this->organ);
+            })->ignore($this->id)],
             'status' => 'required'
         ];
     }

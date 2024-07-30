@@ -36,7 +36,9 @@ class Teacher extends Model
         return [
             'organ' => 'required',
             'name'  => 'required',
-            'cpf'  => ['required', Rule::unique('teachers', 'cpf')->ignore($this->id)]
+            'cpf'  => ['required', Rule::unique('teachers', 'cpf')->where(function($query){
+                return $query->where('organ', $this->organ);
+            })->ignore($this->id)]
         ];
     }
 
