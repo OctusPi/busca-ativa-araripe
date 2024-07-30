@@ -1,26 +1,29 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 
+import Page from '@/services/page';
+
 import HeaderMainComp from '@/components/HeaderMainComp.vue'
 import NavMainComp from '@/components/NavMainComp.vue'
-import Page from '@/services/page';
 import HeaderBoxUiComp from '@/components/HeaderBoxUiComp.vue';
-import InputDropMultSelect from '@/components/inputs/InputDropMultSelect.vue';
 import TableList from '@/components/TableList.vue';
 
 const pgdata = ref({
     baseURL: '/teachers',
-    uiview: { search: false, register: false},
+    uiview: { search: false, register: false },
     data: {},
     search: {},
     dataheader: [
         { key: 'name', title: 'NOME' },
         { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
-        { key: 'qualification', title: 'QUALIFICAÇÃO'}
+        { key: 'degree', title: 'FORMAÇÃO' },
+        { key: 'qualification', cast: 'title', title: 'QUALIFICAÇÃO' },
+        { key: 'organ', cast: 'name', title: 'ORGANIZAÇÃO' }
     ],
     datalist: [],
     selects: {
-        qualifications:[]
+        qualifications: [],
+        organs: [],
     },
     rules: {
         fields: {
@@ -28,7 +31,9 @@ const pgdata = ref({
             cpf: 'required',
             phone: 'required',
             email: 'required|email',
-            qualification: 'required'
+            degree: 'required',
+            qualification: 'required',
+            organ: 'required'
         },
         valids: {}
     },
@@ -66,15 +71,17 @@ onMounted(() => {
                     <div class="page-title-bar me-1"></div>
                     <div>
                         <h1 class="m-0 p-0">Gestão de Professores</h1>
-                        <p class="m-0 p-0 form-text">Credencimento de professores para acesso ao sistema</p>
+                        <p class="m-0 p-0 form-text">Professores credenciados ao Órgão</p>
                     </div>
                 </div>
                 <div class="page-actions d-flex align-items-center">
-                    <button @click="page.ui('register')" type="button" class="btn btn-action d-flex align-items-center ms-2">
+                    <button @click="page.ui('register')" type="button"
+                        class="btn btn-action d-flex align-items-center ms-2">
                         <ion-icon name="add-circle-outline" class="fs-6 me-1 btn-icon"></ion-icon>
                         <span>Adicionar</span>
                     </button>
-                    <button @click="page.ui('search')" type="button" class="btn btn-action d-flex align-items-center ms-2">
+                    <button @click="page.ui('search')" type="button"
+                        class="btn btn-action d-flex align-items-center ms-2">
                         <ion-icon name="search-outline" class="fs-6 me-1 btn-icon"></ion-icon>
                         <span>Localizar</span>
                     </button>
@@ -82,30 +89,16 @@ onMounted(() => {
             </header>
 
             <!-- BOX SEARCH -->
-             <div v-if="pgdata.uiview.search" class="box p-5 mb-3">
-                <HeaderBoxUiComp 
-                icon="search-outline" title="Localizar Registros"
-                desc="Aplique os filtros para localizar os registros desejados" />
-                
+            <div v-if="pgdata.uiview.search" class="box p-5 mb-3">
+                <HeaderBoxUiComp icon="search-outline" title="Encontrar Professores"
+                    desc="Aplique os filtros para localizar registros de professores." />
+
                 <form class="form-row" @submit.prevent="page.list">
                     <div class="row g-3">
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <label for="s-name" class="form-label">Nome</label>
                             <input type="text" name="name" class="form-control" id="s-name"
                                 placeholder="Buscar por parte do nome" v-model="pgdata.search.name">
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <label for="s-email" class="form-label">E-mail</label>
-                            <input type="email" name="email" class="form-control" id="s-email"
-                                placeholder="user@example.com" v-model="pgdata.search.email">
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" class="form-control" id="status"
-                                v-model="pgdata.search.status">
-                                <option></option>
-                                <option v-for="s in pgdata.selects.status" :key="s.id" :value="s.id">{{ s.title }}</option>
-                            </select>
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mt-4">
@@ -116,44 +109,35 @@ onMounted(() => {
                     </div>
                 </form>
 
-             </div>
+            </div>
 
             <!-- BOX LIST -->
 
             <div v-if="!pgdata.uiview.register" class="box p-5 mb-3">
-                <HeaderBoxUiComp
-                icon="people-outline" title="Professores Credênciados"
-                desc="Listagem de professores registrados para acesso ao sistema" />
+                <HeaderBoxUiComp icon="people-outline" title="Professores Credenciados"
+                    desc="Visualize e gerencie a lista de professores credenciados ao órgão." />
 
                 <div class="form-neg-box">
-                    <TableList 
-                    :header="pgdata.dataheader" 
-                    :body="pgdata.datalist"
-                    :actions="['update', 'delete']"
-                    :casts="{
-                        status:pgdata.selects.status, 
-                        profile:pgdata.selects.profiles,
-                        passchange: [{ id: 0, title: 'Ativa' }, { id: 1, title: 'Mudança de Senha' }]
-                    }"
-                    @action:update="page.update"
-                    @action:delete="page.remove"
-                    />
+                    <TableList :header="pgdata.dataheader" :body="pgdata.datalist" :actions="['update', 'delete']"
+                        :casts="{
+                            qualification: pgdata.selects.qualifications,
+                            organ: pgdata.selects.organs
+                        }" @action:update="page.update" @action:delete="page.remove" />
                 </div>
             </div>
 
             <!-- BOX REGISTER -->
             <div v-if="pgdata.uiview.register" class="box p-5 mb-3">
-                <HeaderBoxUiComp 
-                icon="body-outline" title="Registro de Professores"
-                desc="Gerenciamento de dados do Professor" />
+                <HeaderBoxUiComp icon="body-outline" title="Cadastro de Professores"
+                    desc="Gerenciamento de cadastro dos Professores" />
 
                 <form class="form-row" @submit.prevent="page.save">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-4">
                             <label for="name" class="form-label">Nome</label>
                             <input type="text" name="name" class="form-control"
-                                :class="{'form-control-alert': pgdata.rules.valids.name }" id="name"
-                                placeholder="Nome" v-model="pgdata.data.name">
+                                :class="{ 'form-control-alert': pgdata.rules.valids.name }" id="name" placeholder="Nome"
+                                v-model="pgdata.data.name">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="email" class="form-label">E-mail</label>
@@ -164,14 +148,20 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-4">
                             <label for="cpf" class="form-label">CPF</label>
                             <input type="text" class="form-control"
-                                :class="{'form-control-alert' : pgdata.rules.valids.cpf }" id="cpf"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.cpf }" id="cpf"
                                 placeholder="123.456.789-00" v-model="pgdata.data.cpf">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="phone" class="form-label">Fone</label>
                             <input type="text" class="form-control"
-                                :class="{'form-control-alert' : pgdata.rules.valids.phone }" id="phone"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.phone }" id="phone"
                                 placeholder="(00) 91234-5678" v-model="pgdata.data.phone">
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label for="degree" class="form-label">Formação</label>
+                            <input type="text" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.degree }" id="degree"
+                                placeholder="Licenciatura em Letras" v-model="pgdata.data.degree">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="qualification" class="form-label">Qualificação</label>
@@ -179,13 +169,25 @@ onMounted(() => {
                                 :class="{ 'form-control-alert': pgdata.rules.valids.qualification }" id="qualification"
                                 v-model="pgdata.data.qualification">
                                 <option></option>
-                                <option v-for="s in pgdata.selects.qualifications" :key="s.id" :value="s.id">{{ s.title }}
+                                <option v-for="s in pgdata.selects.qualifications" :key="s.id" :value="s.id">{{ s.title
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label for="organ" class="form-label">Órgão</label>
+                            <select name="organ" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.organ }" id="organ"
+                                v-model="pgdata.data.organ">
+                                <option></option>
+                                <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ s.name }}
                                 </option>
                             </select>
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mt-4">
-                        <button @click="page.ui('list')" type="button" class="btn btn-form btn-warning d-flex align-items-center">
+                        <button @click="page.ui('list')" type="button"
+                            class="btn btn-form btn-warning d-flex align-items-center">
                             <ion-icon name="close-circle-outline" class="fs-6 me-1"></ion-icon>
                             Cancelar
                         </button>
@@ -194,7 +196,7 @@ onMounted(() => {
                             Salvar
                         </button>
                     </div>
-                </form>                
+                </form>
 
             </div>
 

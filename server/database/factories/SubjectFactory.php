@@ -15,7 +15,7 @@ class SubjectFactory extends Factory
         return [
             'organ' => Organ::inRandomOrder()->first()->id, // Assumindo que você tem registros na tabela organs
             'name' => $this->faker->unique()->word,
-            'area' => $this->faker->numberBetween(1, 10), // Ajuste conforme necessário para representar áreas de estudo
+            'area' => $this->faker->numberBetween(1, 4), // Ajuste conforme necessário para representar áreas de estudo
             'description' => $this->faker->sentence, // Use sentence para uma descrição simples
         ];
     }

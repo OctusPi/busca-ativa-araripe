@@ -23,9 +23,9 @@ class Subject extends Model
     public function rules(): array
     {
         return [
-            'organ'   => 'required',
+            'organ' => 'required',
             'name'  => 'required',
-            'area'   => 'required'
+            'area'  => 'required'
         ];
     }
 
@@ -52,7 +52,7 @@ class Subject extends Model
             ['id' => 1, 'title' => 'Ciências Humanas e suas Tecnologias'],
             ['id' => 2, 'title' => 'Ciências da Natureza e suas Tecnologias'],
             ['id' => 3, 'title' => 'Linguagens, Códigos e suas Tecnologias'],
-            ['id' => 4, 'title' => 'Matemática e suas Tecnologias'],
+            ['id' => 4, 'title' => 'Matemática e suas Tecnologias']
         ];
     }
 }
