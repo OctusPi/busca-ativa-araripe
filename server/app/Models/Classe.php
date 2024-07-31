@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -73,10 +72,21 @@ class Classe extends Model
         return $this->belongsTo(Grid::class);
     }
 
-    public static function list_turn():array
+    public static function list_turns():array
     {
         return [
-          ['id' => 0, 'title' => '']
+          ['id' => 1, 'title' => 'Manhã'],
+          ['id' => 2, 'title' => 'Tarde'],
+          ['id' => 3, 'title' => 'Noite'],
+          ['id' => 4, 'title' => 'Integral']
+        ];
+    }
+
+    public static function list_status():array
+    {
+        return [
+          ['id' => 1, 'title' => 'Ativo'],
+          ['id' => 0, 'title' => 'Inativo']
         ];
     }
 }

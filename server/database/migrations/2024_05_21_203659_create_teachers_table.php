@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('cpf');
             $table->string('phone', 24)->nullable();
             $table->string('email')->nullable();
-            $table->string('qualification')->nullable();
+            $table->string('degree')->nullable();
+            $table->integer('qualification')->nullable();
         });
     }
 

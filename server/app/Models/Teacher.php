@@ -13,6 +13,7 @@ class Teacher extends Model
     use HasFactory;
 
     protected $table = 'teachers';
+    
     protected $fillable = [
         'id',
         'organ',
@@ -21,6 +22,7 @@ class Teacher extends Model
         'cpf',
         'phone',
         'email',
+        'degree',
         'qualification'
     ];
 
@@ -36,7 +38,7 @@ class Teacher extends Model
             'name'  => 'required',
             'cpf'  => ['required', Rule::unique('teachers', 'cpf')->where(function($query){
                 return $query->where('organ', $this->organ);
-            })]
+            })->ignore($this->id)]
         ];
     }
 
@@ -56,5 +58,18 @@ class Teacher extends Model
     public function grid():BelongsTo
     {
         return $this->belongsTo(Grid::class);
+    }
+
+    public static function list_qualifications():array
+    {
+        return [
+            ['id' => 1, 'title' => 'Graduação Completa'],
+            ['id' => 2, 'title' => 'Graduação em Andamento'],
+            ['id' => 3, 'title' => 'Especialização Completa'],
+            ['id' => 4, 'title' => 'Especialização em Andamento'],
+            ['id' => 5, 'title' => 'Mestrado Completo'],
+            ['id' => 6, 'title' => 'Doutorado Completo'],
+            ['id' => 7, 'title' => 'Doutorado em Andamento'],
+        ];
     }
 }
