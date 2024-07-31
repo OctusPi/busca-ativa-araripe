@@ -16,9 +16,9 @@ const pgdata = ref({
         sent:false
     },
     dataheader:[
-        { key: 'code', title: 'CÓDIGO' },
-        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'organ', cast:'name' }] },
-        { key: 'course', cast:'title', title: 'ORGANIZAÇÃO', sub: [{ key: 'level', cast:'title' }] },
+        { obj:'school', key: 'name', title: 'ESCOLA', sub:[{obj:'organ', key:'name'}] },
+        { obj:'serie', key: 'name', title: 'SERIE', sub:[{obj:'serie', key:'course', cast:'title'}] },
+        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'turn', cast:'title' }] },
         { key: 'status', cast:'title', title: 'STATUS' }
     ],
     datalist:[],
@@ -27,15 +27,16 @@ const pgdata = ref({
         schools:[],
         series:[],
         turns:[],
+        courses:[],
         status: []
     },
     rules: {
         fields: {
             organ: 'required',
+            school: 'required',
+            serie: 'required',
             name: 'required',
-            code: 'required',
-            course: 'required',
-            level: 'required',
+            turn: 'required',
             status: 'required'
         },
         valids: {}
@@ -95,7 +96,7 @@ onMounted(() => {
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-4">
                             <label for="s-organ" class="form-label">Orgão</label>
-                            <select name="s-organ" class="form-control" id="s-organ"
+                            <select @change="page.selects('school', pgdata.search.organ)" name="s-organ" class="form-control" id="s-organ"
                                 v-model="pgdata.search.organ">
                                 <option></option>
                                 <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ s.name }}</option>
@@ -139,9 +140,8 @@ onMounted(() => {
                     :body="pgdata.datalist"
                     :actions="['update', 'delete']"
                     :casts="{
-                        organ:pgdata.selects.organs,
                         course:pgdata.selects.courses,
-                        level:pgdata.selects.levels,
+                        turn:pgdata.selects.turns,
                         status:pgdata.selects.status
                     }"
                     @action:update="page.update"
@@ -164,20 +164,8 @@ onMounted(() => {
                 <form class="form-row" @submit.prevent="page.save">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-4">
-                            <label for="code" class="form-label">Código</label>
-                            <input type="text" name="code" class="form-control"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.code }" id="code"
-                                placeholder="Definição Unidade" v-model="pgdata.data.code">
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <label for="name" class="form-label">Série/Ano</label>
-                            <input type="text" name="name" class="form-control"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.name }" id="name"
-                                placeholder="Definição do Nivel" v-model="pgdata.data.name">
-                        </div>
-                        <div class="col-sm-12 col-md-4">
                             <label for="organ" class="form-label">Orgão</label>
-                            <select name="organ" class="form-control"
+                            <select @change="page.selects('school', pgdata.data.organ)" name="organ" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.organ }" id="organ"
                                 v-model="pgdata.data.organ">
                                 <option></option>
@@ -185,25 +173,42 @@ onMounted(() => {
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-4">
-                            <label for="course" class="form-label">Curso</label>
-                            <select name="course" class="form-control"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.course }" id="course"
-                                v-model="pgdata.data.course">
+                            <label for="school" class="form-label">Escola</label>
+                            <select name="school" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.school }" id="school"
+                                v-model="pgdata.data.school">
                                 <option></option>
-                                <option v-for="s in pgdata.selects.courses" :key="s.id" :value="s.id">{{ s.title }}</option>
+                                <option v-for="s in pgdata.selects.schools" :key="s.id" :value="s.id">{{ s.name }}</option>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-4">
-                            <label for="level" class="form-label">Nivel</label>
-                            <select name="level" class="form-control"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.level }" id="level"
-                                v-model="pgdata.data.level">
+                            <label for="serie" class="form-label">Série/Ano</label>
+                            <select name="serie" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.serie }" id="serie"
+                                v-model="pgdata.data.serie">
                                 <option></option>
-                                <option v-for="s in pgdata.selects.levels" :key="s.id" :value="s.id">{{ s.title }}</option>
+                                <option v-for="s in pgdata.selects.series" :key="s.id" :value="s.id">{{ s.name }}</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-4">
+                            <label for="name" class="form-label">Turma</label>
+                            <input type="text" name="name" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.name }" id="name"
+                                placeholder="Definição do Nome da Turma" v-model="pgdata.data.name">
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-4">
+                            <label for="turn" class="form-label">Turno</label>
+                            <select name="turn" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.turn }" id="turn"
+                                v-model="pgdata.data.turn">
+                                <option></option>
+                                <option v-for="s in pgdata.selects.turns" :key="s.id" :value="s.id">{{ s.title }}</option>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-4">
-                            <label for="status" class="form-label">Status</label>
+                            <label for="status" class="form-label">Situação</label>
                             <select name="status" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.status }" id="status"
                                 v-model="pgdata.data.status">

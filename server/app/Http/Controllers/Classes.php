@@ -19,16 +19,17 @@ class Classes extends Controller
     public function list(Request $request)
     {
 
-        return $this->base_list($request, ['organ', 'school', 'serie'], ['name']);
+        return $this->base_list($request, ['organ', 'school', 'serie'], ['name'], ['organ', 'school', 'serie']);
     }
 
     public function selects(Request $request)
     {
         $selects = [
-            'organs' => Data::find(Organ::class, order: ['name']),
-            'series' => Data::find(Serie::class, order: ['name']),
-            'turns'  => Classe::list_turns(),
-            'status' => Classe::list_status()
+            'organs'  => Data::find(Organ::class, order: ['name']),
+            'series'  => Data::find(Serie::class, order: ['name']),
+            'turns'   => Classe::list_turns(),
+            'courses' => Serie::list_courses(),
+            'status'  => Classe::list_status()
         ];
 
         if($request->key == 'school'){
