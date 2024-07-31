@@ -115,9 +115,8 @@ onMounted(() => {
             <!-- BOX LIST -->
 
             <div v-if="!pgdata.uiview.register" class="box p-5 mb-3">
-                <HeaderBoxUiComp icon="people-outline" title="Disciplinas Cadastradas."
+                <HeaderBoxUiComp icon="library-outline" title="Disciplinas Cadastradas."
                     desc="Visualize e gerencie a lista de disciplinas cadastradas." />
-
                 <div class="form-neg-box">
                     <TableList :header="pgdata.dataheader" :body="pgdata.datalist" :actions="['update', 'delete']"
                         :casts="{
@@ -129,7 +128,7 @@ onMounted(() => {
 
             <!-- BOX REGISTER -->
             <div v-if="pgdata.uiview.register" class="box p-5 mb-3">
-                <HeaderBoxUiComp icon="body-outline" title="Cadastro de Disciplinas"
+                <HeaderBoxUiComp icon="book-outline" title="Cadastro de Disciplinas"
                     desc="Cadastre uma nova disciplina." />
 
                 <form class="form-row" @submit.prevent="page.save">
@@ -159,17 +158,14 @@ onMounted(() => {
                                 <option v-for="s in pgdata.selects.areas" :key="s.id" :value="s.id">{{ s.title }}
                                 </option>
                             </select>
-                        </div>                        
-                    </div>
-                    <div class="row">
-                        <div class="col-sm col-md">
+                        </div>
+                        <div class="col">
                             <label for="description" class="form-label">Descrição</label>
-                            
                             <textarea class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.description }" id="description"
-                                placeholder="Insira a descrição." v-model="pgdata.data.description" name="description" rows="3">
+                                placeholder="Insira a descrição." v-model="pgdata.data.description" name="description"
+                                rows="3">
                             </textarea>
-                                
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mt-4">
@@ -186,9 +182,7 @@ onMounted(() => {
                 </form>
 
             </div>
-
         </div>
-
 
         <div class="nav-view">
             <NavMainComp />
