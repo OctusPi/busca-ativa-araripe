@@ -50,7 +50,8 @@ function logout() {
 onMounted(() => {
     if(auth.token){
         http.get('/auth/check', emit, null, () => {
-        logout()
+            auth.clear()
+            user.value = false
         })
     }
 })

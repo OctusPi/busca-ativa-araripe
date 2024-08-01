@@ -4,39 +4,34 @@ import { onMounted, ref, watch } from 'vue'
 import Page from '@/services/page';
 import masks from '@/utils/masks';
 import dates from '@/utils/dates';
+import notifys from '@/utils/notifys';
+import http from '@/services/http';
 
 import HeaderMainComp from '@/components/HeaderMainComp.vue'
 import NavMainComp from '@/components/NavMainComp.vue'
 import HeaderBoxUiComp from '@/components/HeaderBoxUiComp.vue';
 import TableList from '@/components/TableList.vue';
+import TableListSelect from '@/components/TableListSelect.vue';
 
 const pgdata = ref({
     baseURL: '/registrations',
     uiview: { search: false, register: false },
     data: {},
-    dataimport: {
-        info: 'Selecione um arquivo *.json',
-        organ: null,
-        school: null,
-        serie: null,
-        classe: null,
-        year: null,
-        years: dates.listYears(2022),
-        header: [
-            { key: 'name', title: 'NOME' },
-            { key: 'birth', title: 'NASCIMENTO' },
-            { key: 'cpf', title: 'CPF' },
-            { key: 'id_censo', title: 'ID CENSO' },
-            { key: 'id_sige', title: 'ID SIGE' },
-            { key: 'street', title: 'ENDEREÇO', sub: [{ key: 'neighborhood' }, { key: 'city' }, { key: 'cep' }] },
-            { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
-            { title: '' }
-        ],
-        import: []
-    },
     search: {
         sent: false,
         modality: 'student'
+    },
+    search_students: {
+        sent: false,
+        search: {},
+        header: [
+            { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
+            { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
+            { key: 'city', title: 'LOCALIZAÇÃO', sub: [{ key: 'street' }, { key: 'neighborhood' }] },
+            { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
+            { key: 'status', cast: 'title', title: 'STATUS' }
+        ],
+        body: []
     },
     dataheader: [
         { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
@@ -47,10 +42,12 @@ const pgdata = ref({
     ],
     datalist: [],
     selects: {
+        organs: [],
         schools: [],
         series: [],
         classes: [],
         status: [],
+        students_status: []
     },
     selects_loc: {
         years: dates.listYears(2022)
@@ -58,11 +55,12 @@ const pgdata = ref({
     rules: {
         fields: {
             organ: 'required',
-            name: 'required',
-            birth: 'required',
-            sige: 'required',
-            mother: 'required',
-            status: 'required'
+            school: 'required',
+            serie: 'required',
+            classe: 'required',
+            year: 'required',
+            status: 'required',
+            students: 'required'
         },
         valids: {}
     }
@@ -78,6 +76,17 @@ function list(modality = null) {
     }
 
     return;
+}
+
+function search_students() {
+    if (!Object.keys(pgdata.value.search_students.search).length) {
+        emit('callAlert', notifys.warning('Informe pelo menos um filtro para localizar os alunos...'))
+        return
+    }
+    pgdata.value.search_students.sent = true
+    http.post('/students/list', pgdata.value.search_students.search, emit, (resp) => {
+        pgdata.value.search_students.body = resp.data
+    })
 }
 
 watch(() => props.datalist, (newdata) => {
@@ -148,33 +157,45 @@ onMounted(() => {
                                     <div class="row g-3">
                                         <div class="col-sm-12 col-md-6">
                                             <label for="s-school" class="form-label">Escola</label>
-                                            <select @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)" name="school" class="form-control" id="s-school" v-model="pgdata.search.school">
+                                            <select
+                                                @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)"
+                                                name="school" class="form-control" id="s-school"
+                                                v-model="pgdata.search.school">
                                                 <option></option>
-                                                <option v-for="s in pgdata.selects.schools" :key="s.id" :value="s.id">{{ s.name }}</option>
+                                                <option v-for="s in pgdata.selects.schools" :key="s.id" :value="s.id">{{
+                                                    s.name }}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-12 col-md-2">
                                             <label for="s-serie" class="form-label">Série</label>
-                                            <select @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)" name="serie" class="form-control" id="s-serie" v-model="pgdata.search.serie">
+                                            <select
+                                                @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)"
+                                                name="serie" class="form-control" id="s-serie"
+                                                v-model="pgdata.search.serie">
                                                 <option></option>
-                                                <option v-for="s in pgdata.selects.series" :key="s.id" :value="s.id">{{ s.name }}</option>
+                                                <option v-for="s in pgdata.selects.series" :key="s.id" :value="s.id">{{
+                                                    s.name }}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-12 col-md-2">
                                             <label for="s-classe" class="form-label">Turma</label>
-                                            <select name="classe" class="form-control" id="s-classe" v-model="pgdata.search.classe">
+                                            <select name="classe" class="form-control" id="s-classe"
+                                                v-model="pgdata.search.classe">
                                                 <option></option>
-                                                <option v-for="s in pgdata.selects.classes" :key="s.id" :value="s.id">{{ s.name }}</option>
+                                                <option v-for="s in pgdata.selects.classes" :key="s.id" :value="s.id">{{
+                                                    s.name }}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-12 col-md-2">
                                             <label for="s-year" class="form-label">Ano Letivo</label>
-                                            <select name="year" class="form-control" id="s-year" v-model="pgdata.search.year">
+                                            <select name="year" class="form-control" id="s-year"
+                                                v-model="pgdata.search.year">
                                                 <option></option>
-                                                <option v-for="s in pgdata.selects_loc.years" :key="s" :value="s">{{ s }}</option>
+                                                <option v-for="s in pgdata.selects_loc.years" :key="s" :value="s">{{ s
+                                                    }}</option>
                                             </select>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="d-flex flex-row-reverse mt-4">
                                         <button type="submit" class="btn btn-form btn-accept d-flex align-items-center">
@@ -263,8 +284,121 @@ onMounted(() => {
 
                 <form class="form-row" @submit.prevent="page.save">
                     <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="s-organ" class="form-label">Orgão</label>
+                            <select name="organ" class="form-control" id="s-organ"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.organ }"
+                                v-model="pgdata.data.organ">
+                                <option></option>
+                                <option v-for="o in pgdata.selects.organs" :key="o.id" :value="o.id">{{ o.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="s-school" class="form-label">Escola</label>
+                            <select name="school" class="form-control" id="s-school"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.school }"
+                                v-model="pgdata.data.school">
+                                <option></option>
+                                <option v-for="o in pgdata.selects.schools" :key="o.id" :value="o.id">{{ o.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="s-serie" class="form-label">Série/Ano</label>
+                            <select name="serie" class="form-control" id="s-serie"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.serie }"
+                                v-model="pgdata.data.serie">
+                                <option></option>
+                                <option v-for="o in pgdata.selects.series" :key="o.id" :value="o.id">{{ o.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="s-classe" class="form-label">Turma</label>
+                            <select name="classe" class="form-control" id="s-classe"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.classe }"
+                                v-model="pgdata.data.classe">
+                                <option></option>
+                                <option v-for="o in pgdata.selects.classes" :key="o.id" :value="o.id">{{ o.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="s-year" class="form-label">Ano Letivo</label>
+                            <select name="year" class="form-control" id="s-year"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.year }" v-model="pgdata.data.year">
+                                <option></option>
+                                <option v-for="y in pgdata.selects.years" :key="y" :value="y">{{ y }}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="s-status" class="form-label">Situação</label>
+                            <select name="status" class="form-control" id="s-status"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.status }"
+                                v-model="pgdata.data.status">
+                                <option></option>
+                                <option v-for="y in pgdata.selects.status" :key="y.id" :value="y.id">{{ y.title }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
-                        
+                    <div class="accordion my-4" id="accordion-search">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="accordion-search-header">
+                                <button class="w-100 text-center px-2 py-3" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-search-collapse" aria-expanded="false"
+                                    aria-controls="accordion-search-collapse">
+                                    <h2 class="m-0 p-0 d-flex align-items-center justify-content-center">
+                                        <ion-icon name="people-outline" class="fs-6 me-1"></ion-icon>
+                                        Localizar Alunos
+                                    </h2>
+                                    <p class="form-text text-center m-0 p-0 mt-1">
+                                        Selecione um ou mais alunos para efetuar sua matrícula.
+                                    </p>
+                                </button>
+                            </h2>
+                            <div id="accordion-search-collapse" class="accordion-collapse collapse"
+                                aria-labelledby="accordion-search-header" data-bs-parent="#accordion-search">
+                                <div class="accordion-body p-4">
+                                    <div class="row g-3">
+                                        <div class="col-sm-12 col-md-4">
+                                            <label for="s-name" class="form-label">Nome</label>
+                                            <input type="text" name="name" class="form-control" id="s-name"
+                                                placeholder="Buscar por parte do nome"
+                                                @keydown.enter.prevent="search_students"
+                                                v-model="pgdata.search_students.search.name">
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <label for="s-sige" class="form-label">ID. Sige</label>
+                                            <input type="text" name="sige" class="form-control" id="s-sige"
+                                                @keydown.enter.prevent="search_students" placeholder="00000000"
+                                                v-model="pgdata.search_students.search.id_sige">
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <label for="s-cpf" class="form-label">CPF</label>
+                                            <input type="text" name="cpf" class="form-control" id="s-cpf"
+                                                @keydown.enter.prevent="search_students" placeholder="000.000.000-00"
+                                                v-model="pgdata.search_students.search.cpf" v-maska:[masks.maskcpf]>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mt-4">
+                                        <button type="button" @click="search_students"
+                                            class="btn btn-form btn-accept d-flex align-items-center">
+                                            <ion-icon name="search-outline" class="fs-6 me-1"></ion-icon>
+                                            Localizar Alunos
+                                        </button>
+                                    </div>
+                                    <div class="mt-5 form-neg-box-min">
+                                        <TableListSelect identify="students_reg" :sent="pgdata.search_students.sent"
+                                            :header="pgdata.search_students.header" :body="pgdata.search_students.body"
+                                            :casts="{ status: pgdata.selects.students_status }"
+                                            v-model="pgdata.data.students" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex flex-row-reverse mt-4">
@@ -278,6 +412,8 @@ onMounted(() => {
                             Salvar
                         </button>
                     </div>
+
+
                 </form>
             </div>
 

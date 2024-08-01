@@ -60,7 +60,7 @@ const pgdata = ref({
             organ: 'required',
             name: 'required',
             birth: 'required',
-            sige: 'required',
+            id_sige: 'required',
             mother: 'required',
             status: 'required'
         },
@@ -300,7 +300,7 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-4">
                             <label for="s-sige" class="form-label">ID. Sige</label>
                             <input type="text" name="sige" class="form-control" id="s-sige" placeholder="00000000"
-                                v-model="pgdata.search.sige">
+                                v-model="pgdata.search.id_sige">
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <label for="s-cpf" class="form-label">CPF</label>
@@ -405,7 +405,7 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-4">
                             <label for="sige" class="form-label">ID. Sige</label>
                             <input type="text" name="sige" class="form-control" id="sige"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.sige }" placeholder="0000000000000"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.id_sige }" placeholder="0000000000000"
                                 v-model="pgdata.data.id_sige">
                         </div>
                         <div class="col-sm-12 col-md-4">

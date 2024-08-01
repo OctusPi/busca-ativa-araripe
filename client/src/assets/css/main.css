@@ -261,14 +261,23 @@ body {
     margin-right: -3rem !important;
 }
 
+.form-neg-box-min {
+    margin-left: -1.5rem !important;
+    margin-right: -1.5rem !important;
+}
+
 .modal-content{
     background-color: var(--bg-box);
 }
 
 .accordion-item {
-    background-color: var(--bg-box);
+    background-color: var(--bg-fundo);
     color: var(--cl-txt);
     border: 1px solid var(--cl-border);
+}
+
+.accordion-item h2{
+    font-size: 0.9rem;
 }
 
 @media(max-width:992px) {

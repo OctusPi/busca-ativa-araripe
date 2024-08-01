@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Serie;
 use App\Models\Classe;
 use App\Models\School;
+use App\Models\Student;
 use App\Providers\Modules;
 use App\Models\Registration;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class Registrations extends Controller
             'schools'  => Data::find(School::class, order: ['name']),
             'series'  => Data::find(Serie::class, order: ['name']),
             'status'  => Registration::list_status(),
+            'students_status' => Student::list_status(),
         ];
 
         if($request->key == 'classe'){

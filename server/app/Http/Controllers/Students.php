@@ -27,7 +27,7 @@ class Students extends Controller
             $request->birth = Dates::convert($request->birth, Dates::PTBR, Dates::UTC);
         }
 
-        return $this->base_list($request, ['name', 'sige', 'cpf', 'mother', 'birth', 'status'], ['name']);
+        return $this->base_list($request, ['name', 'id_sige', 'cpf', 'mother', 'birth', 'status'], ['name']);
     }
 
     public function selects(Request $request)

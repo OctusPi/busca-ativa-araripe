@@ -64,6 +64,24 @@ function dateProtocol(pivot, separator = '') {
         return String(pivot).padStart(3, '0') + separator + date + separator + mili
 }
 
+function reduceArrays(a, b, k = 'id') {
+    const map = new Map();
+
+    if (Array.isArray(a)) {
+        a.forEach(item => {
+            map.set(item[k], item)
+        })
+    }
+    
+    if (Array.isArray(b)) {
+        b.forEach(item => {
+            map.set(item[k], item)
+        })
+    }
+
+    return Array.from(map.values())
+}
+
 export default {
     load,
     dateNow,
@@ -71,5 +89,6 @@ export default {
     getTxt,
     truncate,
     stripHTML,
-    dateProtocol
+    dateProtocol,
+    reduceArrays
 }

@@ -86,7 +86,7 @@ class Registration extends Model
     public static function list_status():array
     {
         return [
-            ['id' => self::S_ACTIVE, 'title' => 'Cursando'],
+            ['id' => self::S_ACTIVE, 'title' => 'Matriculado'],
             ['id' => self::S_APPROVED, 'title' => 'Aprovado'],
             ['id' => self::S_INACTIVE, 'title' => 'Desistente'],
             ['id' => self::S_TRANSFER, 'title' => 'Transferido'],
