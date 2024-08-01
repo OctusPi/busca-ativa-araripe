@@ -4,12 +4,12 @@ import { onMounted, ref, watch } from 'vue'
 import Page from '@/services/page';
 import masks from '@/utils/masks';
 import dates from '@/utils/dates';
+import http from '@/services/http';
 
 import HeaderMainComp from '@/components/HeaderMainComp.vue'
 import NavMainComp from '@/components/NavMainComp.vue'
 import HeaderBoxUiComp from '@/components/HeaderBoxUiComp.vue';
 import TableList from '@/components/TableList.vue';
-import http from '@/services/http';
 
 const pgdata = ref({
     baseURL: '/students',
@@ -105,6 +105,7 @@ function importReader(e) {
 }
 
 function importClear() {
+    pgdata.value.dataimport = {}
     pgdata.value.dataimport.import = []
     pgdata.value.dataimport.info = 'Selecione um arquivo *.json'
 }
@@ -149,7 +150,7 @@ onMounted(() => {
                     <div class="row g-3">
                         <div class="col-sm-12">
                             <label for="i-organ" class="form-label">Orgão</label>
-                            <select @change="page.selects('organ', pgdata.dataimport.organ)" name="i-organ" id="i-organ"
+                            <select @change="page.selects('school', pgdata.dataimport.organ)" name="i-organ" id="i-organ"
                                 class="form-control" v-model="pgdata.dataimport.organ">
                                 <option></option>
                                 <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{ s.name }}
@@ -188,6 +189,7 @@ onMounted(() => {
                                         <div class="col-sm-12 col-md-6">
                                             <label for="i-school" class="form-label">Escola</label>
                                             <select name="name" class="form-control" id="i-school"
+                                            @change="page.selects('classe', `${pgdata.dataimport.organ},${pgdata.dataimport.school},${pgdata.dataimport.serie}`)"
                                                 v-model="pgdata.dataimport.school">
                                                 <option></option>
                                                 <option v-for="s in pgdata.selects.schools" :key="s.id" :value="s.id">{{
@@ -196,7 +198,7 @@ onMounted(() => {
                                         </div>
                                         <div class="col-sm-12 col-md-2">
                                             <label for="i-serie" class="form-label">Série</label>
-                                            <select @change="page.selects('school', `${pgdata.dataimport.school},${pgdata.dataimport.serie}`)" name="name" class="form-control" id="i-serie"
+                                            <select @change="page.selects('classe', `${pgdata.dataimport.organ},${pgdata.dataimport.school},${pgdata.dataimport.serie}`)" name="name" class="form-control" id="i-serie"
                                                 v-model="pgdata.dataimport.serie">
                                                 <option></option>
                                                 <option v-for="s in pgdata.selects.series" :key="s.id" :value="s.id">{{
@@ -521,11 +523,5 @@ onMounted(() => {
     top: 0;
     opacity: 0;
     cursor: pointer;
-}
-
-.accordion-item {
-    background-color: var(--bg-box);
-    color: var(--cl-txt);
-    border: 1px solid var(--cl-border);
 }
 </style>
