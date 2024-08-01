@@ -265,6 +265,12 @@ body {
     background-color: var(--bg-box);
 }
 
+.accordion-item {
+    background-color: var(--bg-box);
+    color: var(--cl-txt);
+    border: 1px solid var(--cl-border);
+}
+
 @media(max-width:992px) {
     .main-view {
         width: 100%;

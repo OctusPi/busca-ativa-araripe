@@ -40,15 +40,16 @@ class Students extends Controller
             'status'  => Student::list_status(),
         ];
 
-        if($request->key == 'organ'){
+        if($request->key == 'school'){
             $selects['schools'] = Data::find(School::class, ['organ' => $request->search], ['name']);
         }
 
-        if($request->key == 'school'){
+        if($request->key == 'classe'){
             $search = explode(',', $request->search);
+            $selects['schools'] = Data::find(School::class, ['organ' => $search[0]], ['name']);
             $selects['classes'] = Data::find(Classe::class, [
-                ['column' => 'school', 'operator' => '=', 'value' => $search[0]],
-                ['column' => 'serie', 'operator' => '=', 'value' => $search[1]],
+                ['column' => 'school', 'operator' => '=', 'value' => $search[1]],
+                ['column' => 'serie', 'operator' => '=', 'value' => $search[2]],
             ], ['name']);
         }
 
@@ -96,7 +97,7 @@ class Students extends Controller
             }
         }
 
-        return response()->json($fails > 0 
+        return response()->json($fails > 0
         ? Notify::warning("Falha ao importar $fails alunos")
         : Notify::success("Registros importados com sucesso"), $fails > 0 ? 500 : 200);
     }
