@@ -5,11 +5,11 @@ const props = defineProps({
 
 function get_badge() {
     const badges = {
-        'text-bg-secondary': 'Rascunho|Inativo|Baixa|Deserto|Fracassado',
-        'text-bg-primary': 'Enviado|Aberto',
-        'text-bg-warning': 'Pendente|Média|Adiado|Revogado',
-        'text-bg-danger': 'Bloqueado|Alta|Anulado|Cancelado',
-        'text-bg-success': 'Processado|Ativo|Ativa|Finalizado'
+        'text-bg-secondary': 'Rascunho|Inativo|Baixa|Deserto|Fracassado|Transferido',
+        'text-bg-primary': 'Enviado|Aberto|Aprovado',
+        'text-bg-warning': 'Pendente|Média|Adiado|Revogado|Desistente',
+        'text-bg-danger': 'Bloqueado|Alta|Anulado|Cancelado|Reprovado',
+        'text-bg-success': 'Processado|Ativo|Ativa|Finalizado|Matriculado'
     }
     for(let i in badges){
         const a = (badges[i]).split('|')

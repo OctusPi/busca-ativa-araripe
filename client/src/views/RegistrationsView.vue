@@ -6,6 +6,7 @@ import masks from '@/utils/masks';
 import dates from '@/utils/dates';
 import notifys from '@/utils/notifys';
 import http from '@/services/http';
+import forms from '@/services/forms';
 
 import HeaderMainComp from '@/components/HeaderMainComp.vue'
 import NavMainComp from '@/components/NavMainComp.vue'
@@ -34,10 +35,9 @@ const pgdata = ref({
         body: []
     },
     dataheader: [
-        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
-        { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
-        { key: 'city', title: 'LOCALIZAÇÃO', sub: [{ key: 'street' }, { key: 'neighborhood' }] },
-        { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
+        { obj: 'student', key: 'name', title: 'ALUNO', sub: [{ obj: 'student', key: 'id_sige', title: 'ID. Sige: ' }] },
+        { obj: 'school', key: 'name', title: 'ESCOLA', sub: [{ obj: 'school', key: 'inep' }] },
+        { key: 'year', title: 'MATRÍCULA', sub: [{ obj: 'serie', title: 'Série: ', key: 'name' }, { obj: 'classe', title: ' - Turma: ', key: 'name' }] },
         { key: 'status', cast: 'title', title: 'STATUS' }
     ],
     datalist: [],
@@ -71,11 +71,47 @@ const props = defineProps({ datalist: { type: Array, default: () => [] } })
 const page = new Page(pgdata, emit)
 
 function list(modality = null) {
+    pgdata.value.search.modality = modality
+
     if (modality === 'student') {
-        return;
+        if (!pgdata.value.search.name && !pgdata.value.search.id_sige) {
+            emit('callAlert', notifys.warning('Informe o nome ou ID. Sige do aluno pra localizar as matrículas...'))
+            return
+        }
+    } else {
+        const rules = {
+            fields: {
+                school: 'required',
+                serie: 'required',
+                classe: 'required',
+                year: 'required'
+            },
+            valids: {}
+        }
+
+        const check = forms.checkform(pgdata.value.search, rules)
+
+        if (!check.isvalid) {
+            emit('callAlert', notifys.warning(check.message))
+            return
+        }
     }
 
-    return;
+    page.list()
+}
+
+function update(id) {
+    const reg = pgdata.value.datalist.find(obj => obj.id === id)
+    if (reg) {
+        page.selects('classes', `${reg.school.organ},${reg.school.id},${reg.serie.id}`);
+        http.get(`${pgdata.value.baseURL}/details/${id}`, emit, (resp) => {
+            pgdata.value.data = resp.data
+            pgdata.value.search_students.sent = true
+            pgdata.value.search_students.body = [resp.data.student]
+            pgdata.value.data.students = [resp.data.student]
+            page.ui('update')
+        })
+    }
 }
 
 function search_students() {
@@ -156,9 +192,18 @@ onMounted(() => {
                                 <form class="form-row" @submit.prevent="list">
                                     <div class="row g-3">
                                         <div class="col-sm-12 col-md-6">
+                                            <label for="s-school" class="form-label">Orgão</label>
+                                            <select @change="page.selects('schools', pgdata.search.organ)" name="organ"
+                                                class="form-control" id="s-organ" v-model="pgdata.search.organ">
+                                                <option></option>
+                                                <option v-for="s in pgdata.selects.organs" :key="s.id" :value="s.id">{{
+                                                    s.name }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
                                             <label for="s-school" class="form-label">Escola</label>
                                             <select
-                                                @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)"
+                                                @change="page.selects('classes', `${pgdata.search.organ},${pgdata.search.school},${pgdata.search.serie}`)"
                                                 name="school" class="form-control" id="s-school"
                                                 v-model="pgdata.search.school">
                                                 <option></option>
@@ -166,10 +211,10 @@ onMounted(() => {
                                                     s.name }}</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-12 col-md-2">
+                                        <div class="col-sm-12 col-md-6">
                                             <label for="s-serie" class="form-label">Série</label>
                                             <select
-                                                @change="page.selects('classe', `${pgdata.search.school},${pgdata.search.serie}`)"
+                                                @change="page.selects('classes', `${pgdata.search.organ},${pgdata.search.school},${pgdata.search.serie}`)"
                                                 name="serie" class="form-control" id="s-serie"
                                                 v-model="pgdata.search.serie">
                                                 <option></option>
@@ -177,7 +222,7 @@ onMounted(() => {
                                                     s.name }}</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-12 col-md-2">
+                                        <div class="col-sm-12 col-md-3">
                                             <label for="s-classe" class="form-label">Turma</label>
                                             <select name="classe" class="form-control" id="s-classe"
                                                 v-model="pgdata.search.classe">
@@ -186,7 +231,7 @@ onMounted(() => {
                                                     s.name }}</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-12 col-md-2">
+                                        <div class="col-sm-12 col-md-3">
                                             <label for="s-year" class="form-label">Ano Letivo</label>
                                             <select name="year" class="form-control" id="s-year"
                                                 v-model="pgdata.search.year">
@@ -195,7 +240,6 @@ onMounted(() => {
                                                     }}</option>
                                             </select>
                                         </div>
-
                                     </div>
                                     <div class="d-flex flex-row-reverse mt-4">
                                         <button type="submit" class="btn btn-form btn-accept d-flex align-items-center">
@@ -234,7 +278,7 @@ onMounted(() => {
                                         <div class="col-sm-12 col-md-4">
                                             <label for="s-sige" class="form-label">ID. Sige</label>
                                             <input type="text" name="sige" class="form-control" id="s-sige"
-                                                placeholder="00000000" v-model="pgdata.search.sige">
+                                                placeholder="00000000" v-model="pgdata.search.id_sige">
                                         </div>
                                         <div class="col-sm-12 col-md-4">
                                             <label for="s-cpf" class="form-label">CPF</label>
@@ -268,7 +312,7 @@ onMounted(() => {
                             race: pgdata.selects.races,
                             sex: pgdata.selects.sexs,
                             status: pgdata.selects.status
-                        }" @action:update="page.update" @action:delete="page.remove" />
+                        }" @action:update="update" @action:delete="page.remove" />
                 </div>
 
                 <div class="text-center" v-else>
@@ -287,8 +331,8 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-6">
                             <label for="s-organ" class="form-label">Orgão</label>
                             <select name="organ" class="form-control" id="s-organ"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.organ }"
-                                v-model="pgdata.data.organ">
+                                :class="{ 'form-control-alert': pgdata.rules.valids.organ }" v-model="pgdata.data.organ"
+                                @change="page.selects('schools', pgdata.data.organ)">
                                 <option></option>
                                 <option v-for="o in pgdata.selects.organs" :key="o.id" :value="o.id">{{ o.name }}
                                 </option>
@@ -298,7 +342,8 @@ onMounted(() => {
                             <label for="s-school" class="form-label">Escola</label>
                             <select name="school" class="form-control" id="s-school"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.school }"
-                                v-model="pgdata.data.school">
+                                v-model="pgdata.data.school"
+                                @change="page.selects('classes', `${pgdata.data.organ},${pgdata.data.school},${pgdata.data.serie}`)">
                                 <option></option>
                                 <option v-for="o in pgdata.selects.schools" :key="o.id" :value="o.id">{{ o.name }}
                                 </option>
@@ -307,8 +352,8 @@ onMounted(() => {
                         <div class="col-sm-12 col-md-3">
                             <label for="s-serie" class="form-label">Série/Ano</label>
                             <select name="serie" class="form-control" id="s-serie"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.serie }"
-                                v-model="pgdata.data.serie">
+                                :class="{ 'form-control-alert': pgdata.rules.valids.serie }" v-model="pgdata.data.serie"
+                                @change="page.selects('classes', `${pgdata.data.organ},${pgdata.data.school},${pgdata.data.serie}`)">
                                 <option></option>
                                 <option v-for="o in pgdata.selects.series" :key="o.id" :value="o.id">{{ o.name }}
                                 </option>
@@ -329,7 +374,7 @@ onMounted(() => {
                             <select name="year" class="form-control" id="s-year"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.year }" v-model="pgdata.data.year">
                                 <option></option>
-                                <option v-for="y in pgdata.selects.years" :key="y" :value="y">{{ y }}</option>
+                                <option v-for="y in pgdata.selects_loc.years" :key="y" :value="y">{{ y }}</option>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-3">
@@ -412,8 +457,6 @@ onMounted(() => {
                             Salvar
                         </button>
                     </div>
-
-
                 </form>
             </div>
 

@@ -23,6 +23,9 @@ class Page {
                 this.data.value.uiview.search = !this.data.value.uiview.search
                 this.data.value.uiview.register = false
                 break;
+            case 'list':
+                this.data.value.uiview.register = false
+                break;
             default:
                 this.data.value.uiview.search = false
                 this.data.value.uiview.register = false
