@@ -29,10 +29,6 @@ const pgdata = ref({
         fields: {
             name: 'required',
             cpf: 'required',
-            phone: 'required',
-            email: 'required|email',
-            degree: 'required',
-            qualification: 'required',
             organ: 'required'
         },
         valids: {}
