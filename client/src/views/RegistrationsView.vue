@@ -35,7 +35,7 @@ const pgdata = ref({
         body: []
     },
     dataheader: [
-        { obj: 'student', key: 'name', title: 'ALUNO', sub: [{ obj: 'student', key: 'id_sige', title: 'ID. Sige: ' }] },
+        { obj: 'student', key: 'name', title: 'ALUNO', sub: [{ obj: 'student', key: 'id_sige', title: 'ID. Sige: ' }, { obj: 'student', key: 'birth', title: ' / Nascimento: ' }] },
         { obj: 'school', key: 'name', title: 'ESCOLA', sub: [{ obj: 'school', key: 'inep' }] },
         { key: 'year', title: 'MATRÍCULA', sub: [{ obj: 'serie', title: 'Série: ', key: 'name' }, { obj: 'classe', title: ' - Turma: ', key: 'name' }] },
         { key: 'status', cast: 'title', title: 'STATUS' }
@@ -317,7 +317,7 @@ onMounted(() => {
 
                 <div class="text-center" v-else>
                     <ion-icon name="chatbox-ellipses-outline" class="form-text fs-3"></ion-icon>
-                    <p class="form-text">Aplique o filtro na opção localizar para visualizar os alunos...</p>
+                    <p class="form-text">Aplique o filtro na opção localizar para visualizar as matrículas...</p>
                 </div>
             </div>
 

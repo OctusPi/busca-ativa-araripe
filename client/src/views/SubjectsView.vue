@@ -14,10 +14,8 @@ const pgdata = ref({
     data: {},
     search: {},
     dataheader: [
-        { key: 'organ', cast: 'name', title: "ÓRGÃO" },
-        { key: 'name', title: "NOME" },
-        { key: 'area', cast: 'title', title: "ÁREA" },
-        { key: 'description', title: "DESCRIÇÂO" },
+        { key: 'name', title: "NOME", sub:[{ key: 'organ', cast: 'name' }] },
+        { key: 'area', cast: 'title', title: "ÁREA", sub:[{ key: 'description'}] }
     ],
     datalist: [],
     selects: {
@@ -28,8 +26,7 @@ const pgdata = ref({
         fields: {
             name: 'required',
             organ: 'required',
-            area: 'required',
-            description: 'required'
+            area: 'required'
         },
         valids: {}
     },
@@ -134,12 +131,6 @@ onMounted(() => {
                 <form class="form-row" @submit.prevent="page.save">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-4">
-                            <label for="name" class="form-label">Nome</label>
-                            <input type="text" name="name" class="form-control"
-                                :class="{ 'form-control-alert': pgdata.rules.valids.name }" id="name" placeholder="Nome"
-                                v-model="pgdata.data.name">
-                        </div>
-                        <div class="col-sm-12 col-md-4">
                             <label for="organ" class="form-label">Órgão</label>
                             <select name="organ" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.organ }" id="organ"
@@ -149,6 +140,13 @@ onMounted(() => {
                                 </option>
                             </select>
                         </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label for="name" class="form-label">Disciplina</label>
+                            <input type="text" name="name" class="form-control"
+                                :class="{ 'form-control-alert': pgdata.rules.valids.name }" id="name" placeholder="Nome da Disciplina"
+                                v-model="pgdata.data.name">
+                        </div>
+                        
                         <div class="col-sm-12 col-md-4">
                             <label for="area" class="form-label">Área</label>
                             <select name="area" class="form-control"

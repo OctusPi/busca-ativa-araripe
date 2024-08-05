@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class Subject extends Model
 {
@@ -24,7 +25,11 @@ class Subject extends Model
     {
         return [
             'organ' => 'required',
-            'name'  => 'required',
+            'name' => [
+                'required',
+                Rule::unique('subjects', 'name')->where(function ($query) {
+                    return $query->where('organ', $this->organ);
+            })->ignore($this->id)],
             'area'  => 'required'
         ];
     }
@@ -32,7 +37,8 @@ class Subject extends Model
     public function messages(): array
     {
         return [
-            'required' => 'Campo obrigatório não informado...'
+            'required' => 'Campo obrigatório não informado...',
+            'unique'   => 'Já existe uma disciplina com esse nome...'
         ];
     }
 
