@@ -37,12 +37,12 @@ body {
 
 .main-view {
     width: 100%;
-    padding: 81px 0 100px 0;
+    padding: 170px 0 20px 0;
 }
 
 .nav-view {
     position: fixed;
-    bottom: 0;
+    top: 81px;
     width: 100%;
 }
 
@@ -281,6 +281,7 @@ body {
 }
 
 @media(max-width:992px) {
+    
     .main-view {
         width: 100%;
         padding: 81px 0 60px 0;
@@ -297,5 +298,10 @@ body {
     .btn-icon {
         margin: 0 !important;
         font-size: 1.3rem !important;
+    }
+
+    .nav-view{
+        top: auto;
+        bottom: 0 !important;
     }
 }
