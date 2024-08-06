@@ -13,19 +13,19 @@
 }
 
 .dp-custom-input-dtpk {
-    border: 2px solid var(--cl-border) !important;
+    border: 1px solid var(--cl-border) !important;
     background-color: var(--bg-input) !important;
-    padding: 10px 34px !important;
+    padding: 10px 12px !important;
     color: var(--cl-txt) !important;
     font-weight: 600;
 }
 
 .dp-custom-input-dtpk-alert{
-    border: 2px solid var(--cl-danger) !important;
+    border: 1px solid var(--cl-danger) !important;
     background-color: var(--bg-input) !important;
-    padding: 10px 34px !important;
+    padding: 10px 12px !important;
     color: var(--cl-txt) !important;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .dp-custom-cell {
@@ -40,7 +40,7 @@
 .dp-custom-menu {
     background-color: var(--bg-input) !important;
     color: var(--cl-txt) !important;
-    border: 2px solid var(--cl-border) !important;
+    border: 1px solid var(--cl-border) !important;
 }
 
 .dp__arrow_top{

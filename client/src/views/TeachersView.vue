@@ -121,7 +121,6 @@ onMounted(() => {
                         </button>
                     </div>
                 </form>
-
             </div>
 
             <!-- BOX LIST -->
