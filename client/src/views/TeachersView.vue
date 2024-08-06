@@ -105,7 +105,7 @@ onMounted(() => {
                             <label for="s-qualification" class="form-label">Qualificação</label>
                             <select name="s-qualification" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.qualification }"
-                                id="s-qualification" v-model="pgdata.data.qualification">
+                                id="s-qualification" v-model="pgdata.search.qualification">
                                 <option></option>
                                 <option v-for="s in pgdata.selects.qualifications" :key="s.id" :value="s.id">{{ s.title
                                     }}
