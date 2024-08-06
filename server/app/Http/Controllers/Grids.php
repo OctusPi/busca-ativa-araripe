@@ -27,7 +27,8 @@ class Grids extends Controller
     public function selects(Request $request)
     {
         $selects = [
-            'organs' => Data::find(Organ::class, order:['name'])
+            'organs' => Data::find(Organ::class, order:['name']),
+            'days'   => Grid::list_days()
         ];
 
         if($request->key == 'organs'){

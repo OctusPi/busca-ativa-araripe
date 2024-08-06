@@ -26,7 +26,8 @@ const pgdata = ref({
         fields: {
             name: 'required',
             organ: 'required',
-            area: 'required'
+            area: 'required',
+            description:'required'
         },
         valids: {}
     },

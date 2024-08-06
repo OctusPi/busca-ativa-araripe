@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(?array $data = null): void
     {
-        Serie::factory(10)->create();
-        Student::factory(10)->create();
         Organ::factory(10)->create();
         School::factory(10)->create();
-        Teacher::factory(10)->create();
+        Serie::factory(10)->create();
         Classe::factory(10)->create();
+        Student::factory(10)->create();
+        Teacher::factory(10)->create();
     }
 }

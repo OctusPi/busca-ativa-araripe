@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Model;
+use App\Casts\Json;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Grid extends Model
 {
@@ -19,13 +20,21 @@ class Grid extends Model
         'serie',
         'classe',
         'subject',
-        'teacher'
+        'teacher',
+        'days'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'days' => Json::class
+        ];
+    }
 
     public function rules(): array
     {
@@ -55,6 +64,17 @@ class Grid extends Model
         return [
             'required' => 'Campo obrigatório não informado...',
             'unique' => 'Grade já registrada no sistema...'
+        ];
+    }
+
+    public static function list_days():array
+    {
+        return [
+            ['id' => 1, 'title' => 'Segunda-feira'],
+            ['id' => 2, 'title' => 'Terça-feira'],
+            ['id' => 3, 'title' => 'Quarta-feira'],
+            ['id' => 4, 'title' => 'Quinta-feira'],
+            ['id' => 5, 'title' => 'Sexta-feira'],
         ];
     }
 

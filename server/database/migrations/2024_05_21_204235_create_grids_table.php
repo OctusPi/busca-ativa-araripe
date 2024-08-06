@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('classe')->constrained('classes');
             $table->foreignId('subject')->constrained('subjects');
             $table->foreignId('teacher')->constrained('teachers');
+            $table->json('days')->nullable();
         });
     }
 

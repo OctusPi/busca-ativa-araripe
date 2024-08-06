@@ -9,6 +9,7 @@ import HeaderBoxUiComp from '@/components/HeaderBoxUiComp.vue';
 import TableList from '@/components/TableList.vue';
 import http from '@/services/http';
 import notifys from '@/utils/notifys';
+import InputDropMultSelect from '@/components/inputs/InputDropMultSelect.vue';
 
 const pgdata = ref({
     baseURL: '/grids',
@@ -21,7 +22,8 @@ const pgdata = ref({
         { obj:'school', key: 'name', title: "ESCOLA", sub:[{ key: 'organ', cast: 'name' }] },
         { obj: 'serie', key: 'name', title: "SERIE" },
         { obj: 'classe', key: 'name', title:'TURMA'},
-        { obj: 'subject', key: 'name', title:'GRADE', sub:[{obj:'teacher', key:'name', title:'Professor: '}]}
+        { obj: 'subject', key: 'name', title:'DISCIPLINA'},
+        { obj: 'teacher', key: 'name', title:'GRADE'}
     ],
     datalist: [],
     selects: {
@@ -30,7 +32,8 @@ const pgdata = ref({
         series: [],
         classes: [],
         subjects: [],
-        teachers:[]
+        teachers: [],
+        days:[]
     },
     rules: {
         fields: {
@@ -39,7 +42,8 @@ const pgdata = ref({
             serie: 'required',
             classe: 'required',
             subject: 'required',
-            teacher: 'required'
+            teacher: 'required',
+            days: 'required'
         },
         valids: {}
     },
@@ -63,7 +67,8 @@ function update(id) {
                 serie: grid.serie.id,
                 classe: grid.classe.id,
                 subject: grid.subject.id,
-                teacher: grid.teacher.id
+                teacher: grid.teacher.id,
+                days: grid.days
             }
             page.ui('update')
         });
@@ -228,7 +233,7 @@ onMounted(() => {
                                 </option>
                             </select>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-2">
                             <label for="serie" class="form-label">Série</label>
                             <select name="serie" class="form-control" @change="page.selects('classes', `${pgdata.data.organ},${pgdata.data.school},${pgdata.data.serie}`)"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.serie }" id="serie"
@@ -238,7 +243,7 @@ onMounted(() => {
                                 </option>
                             </select>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-2">
                             <label for="classe" class="form-label">Turma</label>
                             <select name="classe" class="form-control"
                                 :class="{ 'form-control-alert': pgdata.rules.valids.classe }" id="classe"
@@ -267,6 +272,10 @@ onMounted(() => {
                                 <option v-for="s in pgdata.selects.teachers" :key="s.id" :value="s.id">{{ s.name }}
                                 </option>
                             </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label for="teacher" class="form-label">Dias de Aula</label>
+                            <InputDropMultSelect identify="days_grid" v-model="pgdata.data.days" :options="pgdata.selects.days" />
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mt-4">

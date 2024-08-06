@@ -115,7 +115,7 @@ body {
 }
 
 .form-control {
-    border: 2px solid var(--cl-border);
+    border: 1px solid var(--cl-border);
     background-color: var(--bg-input);
     padding: 10px 14px;
     color: var(--cl-txt);
@@ -123,12 +123,12 @@ body {
 }
 
 .form-control:disabled {
-    border: 2px solid var(--bg-input-disabled);
+    border: 1px solid var(--bg-input-disabled);
     background-color: var(--bg-input-disabled);
 }
 
 .form-control:focus {
-    border: 2px solid var(--cl-base);
+    border: 1px solid var(--cl-base);
     background-color: var(--bg-input-focus);
     color: var(--cl-txt);
     outline: none;
@@ -141,7 +141,7 @@ body {
 }
 
 .form-control-alert {
-    border: 2px solid var(--cl-danger);
+    border: 1px solid var(--cl-danger);
 }
 
 .form-text {
