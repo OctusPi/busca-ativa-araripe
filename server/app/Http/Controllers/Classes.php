@@ -26,7 +26,6 @@ class Classes extends Controller
     {
         $selects = [
             'organs'  => Data::find(Organ::class, order: ['name']),
-            'series'  => Data::find(Serie::class, order: ['name']),
             'turns'   => Classe::list_turns(),
             'courses' => Serie::list_courses(),
             'status'  => Classe::list_status()
@@ -34,6 +33,7 @@ class Classes extends Controller
 
         if($request->key == 'school'){
             $selects['schools'] = Data::find(School::class, ['organ' => $request->search], ['name']);
+            $selects['series'] = Data::find(Serie::class, ['organ' => $request->search], order: ['name']);
         }
 
         return response()->json($selects);

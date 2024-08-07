@@ -34,7 +34,6 @@ class Students extends Controller
     {
         $selects = [
             'organs'  => Data::find(Organ::class, order: ['name']),
-            'series'  => Data::find(Serie::class, order: ['name']),
             'races'   => Student::list_races(),
             'sexs'    => Student::list_sexs(),
             'status'  => Student::list_status(),
@@ -42,11 +41,13 @@ class Students extends Controller
 
         if($request->key == 'school'){
             $selects['schools'] = Data::find(School::class, ['organ' => $request->search], ['name']);
+            $selects['series'] = Data::find(Serie::class, ['organ' => $request->search], ['name']);
         }
 
         if($request->key == 'classe'){
             $search = explode(',', $request->search);
             $selects['schools'] = Data::find(School::class, ['organ' => $search[0]], ['name']);
+            $selects['series'] = Data::find(Serie::class, ['organ' => $search[0]], ['name']);
             $selects['classes'] = Data::find(Classe::class, [
                 ['column' => 'school', 'operator' => '=', 'value' => $search[1]],
                 ['column' => 'serie', 'operator' => '=', 'value' => $search[2]],

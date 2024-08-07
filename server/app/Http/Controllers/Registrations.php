@@ -77,18 +77,19 @@ class Registrations extends Controller
         $selects = [
             'organs'   => Data::find(Organ::class, order:['name']),
             'schools'  => Data::find(School::class, order: ['name']),
-            'series'  => Data::find(Serie::class, order: ['name']),
             'status'  => Registration::list_status(),
             'students_status' => Student::list_status(),
         ];
 
         if($request->key == 'schools'){
             $selects['schools'] = Data::find(School::class, ['organ' => $request->search], order: ['name']);
+            $selects['series'] = Data::find(Serie::class, ['organ' => $request->search], order: ['name']);
         }
 
         if($request->key == 'classes'){
             $search = explode(',', $request->search);
             $selects['schools'] = Data::find(School::class, ['organ' => $search[0] ?? null], order: ['name']);
+            $selects['series'] = Data::find(Serie::class, ['organ' => $search[0] ?? null], order: ['name']);
             $selects['classes'] = Data::find(Classe::class, [
                 ['column' => 'school', 'operator' => '=', 'value' => $search[1] ?? null],
                 ['column' => 'serie', 'operator' => '=', 'value' => $search[2] ?? null],

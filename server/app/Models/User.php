@@ -21,6 +21,8 @@ class User extends Authenticatable
     const P_ADMIN = 1;
     const p_MANAGER = 2;
     const P_TECGUY = 3;
+    const P_SECRETARY = 4;
+    const P_TEACHER = 5;
 
     protected $table = 'users';
 
@@ -92,13 +94,15 @@ class User extends Authenticatable
             'modules' => Json::class
         ];
     }
-    
+
     public static function list_profiles(?int $id = null): null|string|array
     {
         $profiles = [
             ['id' => self::P_ADMIN, 'title' => 'Administrador'],
             ['id' => self::p_MANAGER, 'title' => 'Gestor'],
-            ['id' => self::P_TECGUY, 'title' => 'Técnico']
+            ['id' => self::P_TECGUY, 'title' => 'Técnico'],
+            ['id' => self::P_SECRETARY, 'title' => 'Secretário(a)'],
+            ['id' => self::P_TEACHER, 'title' => 'Professor(a)'],
         ];
 
         if(!is_null($id)) {
