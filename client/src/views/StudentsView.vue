@@ -119,7 +119,6 @@ function importStudents() {
         year: pgdata.value.dataimport.year,
         import: pgdata.value.dataimport.import
      }
-    console.log(data)
     http.post(`${pgdata.value.baseURL}/import`, data, emit, () => {
         importClear()
     })
