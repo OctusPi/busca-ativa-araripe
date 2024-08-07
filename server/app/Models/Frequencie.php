@@ -45,8 +45,7 @@ class Frequencie extends Model
     public function dateMiss():Attribute
     {
         return Attribute::make(
-            get: fn(?string $v) => Dates::convert($v, Dates::UTC, Dates::PTBR),
-            set: fn(?string $v) => Dates::convert($v, Dates::PTBR, Dates::UTC)
+            get: fn(?string $v) => Dates::convert($v, Dates::UTC, Dates::PTBR)
         );
     }
 }

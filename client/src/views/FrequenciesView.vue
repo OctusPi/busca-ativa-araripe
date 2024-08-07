@@ -24,8 +24,7 @@ const pgdata = ref({
         sent: false
     },
     dataheader: [
-        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }] },
-        { key: 'phone', title: 'CONTATO', sub: [{ key: 'email' }] },
+        { key: 'name', title: 'IDENTIFICAÇÃO', sub: [{ key: 'id_sige', title: 'ID. Sige: ' }, { key: 'birth', title: ' / Nasc.: ' }] },
         { key: 'city', title: 'LOCALIZAÇÃO', sub: [{ key: 'street' }, { key: 'neighborhood' }] },
         { key: 'mother', title: 'RESPOSÁVEIS', sub: [{ key: 'father' }] },
         { key: 'status', cast: 'title', title: 'STATUS' }
@@ -76,6 +75,16 @@ function list() {
     })
 }
 
+function register() {
+    const chkf = forms.checkform(pgdata.value.data, pgdata.value.rules)
+    if (!chkf.isvalid) {
+        emit('callAlert', notifys.warning(chkf.message))
+        return;
+    }
+
+    http.post(`${pgdata.value.baseURL}/save`, pgdata.value.data, emit);
+}
+
 watch(() => props.datalist, (newdata) => {
     pgdata.value.datalist = newdata
 })
@@ -115,7 +124,7 @@ onMounted(() => {
                 <HeaderBoxUiComp icon="checkmark-circle-outline" title="Frequência Diária"
                     desc="Registre as faltas para qualificar a presença dos alunos." />
 
-                <form class="form-row" @submit.prevent="page.save">
+                <form class="form-row" @submit.prevent="register">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-4">
                             <label for="school" class="form-label">Escola</label>
@@ -239,7 +248,7 @@ onMounted(() => {
                             <ion-icon name="search-outline" class="fs-6 me-1"></ion-icon>
                             Listar Alunos
                         </button>
-                        <button v-if="pgdata.datalist.length" type="button"
+                        <button v-if="pgdata.datalist.length" type="submit"
                             class="btn btn-form btn-danger d-flex align-items-center mx-2">
                             <ion-icon name="alert-circle-outline" class="fs-6 me-1"></ion-icon>
                             Enviar Frequencia
