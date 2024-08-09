@@ -201,6 +201,18 @@ onMounted(() => {
                         </div>
                     </div>
 
+                    <div class="d-flex flex-row-reverse mt-4">
+                        <button v-if="pgdata.datalist.length" type="submit"
+                            class="btn btn-form btn-danger d-flex align-items-center">
+                            <ion-icon name="alert-circle-outline" class="fs-6 me-1"></ion-icon>
+                            Enviar Frequência
+                        </button>
+                        <button @click="list" type="button" class="btn btn-form btn-accept d-flex align-items-center mx-2">
+                            <ion-icon name="search-outline" class="fs-6 me-1"></ion-icon>
+                            Abrir Frequência
+                        </button>
+                    </div>
+
                     <div class="accordion my-4" id="accordion-search">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="accordion-search-header">
@@ -241,18 +253,6 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="d-flex flex-row-reverse mt-4">
-                        <button @click="list" type="button" class="btn btn-form btn-accept d-flex align-items-center">
-                            <ion-icon name="search-outline" class="fs-6 me-1"></ion-icon>
-                            Listar Alunos
-                        </button>
-                        <button v-if="pgdata.datalist.length" type="submit"
-                            class="btn btn-form btn-danger d-flex align-items-center mx-2">
-                            <ion-icon name="alert-circle-outline" class="fs-6 me-1"></ion-icon>
-                            Enviar Frequencia
-                        </button>
                     </div>
                 </form>
             </div>

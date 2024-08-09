@@ -49,15 +49,29 @@ class Users extends Controller
 
     public function selects(Request $request)
     {
-        return response()->json([
+
+        $selects = [
             'profiles' => User::list_profiles(),
             'modules' => User::list_modules(),
             'status'  => User::list_status(),
             'organs' => Data::find(Organ::class, order:['name']),
+            'schools' => Data::find(School::class, order:['name'])
+        ];
 
-            'Schools' => $request->key && $request->search 
-            ? Data::find(School::class, [$request->key, $request->serarch], ['name']) 
-            : Data::find(School::class, order:['name'])
-        ]);
+        if($request->key == 'schools'){
+            $search = array_column(json_decode($request->serch, true), 'id');
+            $search_params = [];
+
+            if(is_array($search)){
+                foreach($search as $id){
+                    $search_params[] = ['column' => 'organ', 'operator' => '=', 'value' => $id];
+                }
+
+                $selects['schools'] = Data::find(School::class, $search_params, ['name']);
+            }
+
+        }
+
+        return response()->json($selects);
     }
 }
